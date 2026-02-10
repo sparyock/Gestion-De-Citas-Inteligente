@@ -1,104 +1,80 @@
-# Gestion-De-Citas-Inteligente
-Descripción del proyecto
+# Gestión de Citas Inteligente
 
-Plataforma de gestión de citas basada en arquitectura de microservicios.
-Permite administrar reservas, usuarios, servicios y disponibilidad de empleados.
-El sistema puede adaptarse a distintos contextos como barberías, salones de belleza, talleres, consultorios médicos o veterinarias.
+## Descripción
+Plataforma de gestión de citas basada en arquitectura de microservicios.  
+Permite administrar reservas, usuarios, servicios y disponibilidad de empleados.  
+El sistema puede adaptarse a distintos contextos como barberías, salones, talleres, consultorios médicos o veterinarias.
 
-Arquitectura
+---
+
+## Arquitectura
 
 El sistema está compuesto por tres microservicios independientes.
 
-1. Microservicio de Usuarios y Autenticación
+### Microservicio 1: Usuarios y Autenticación
+**Tecnologías:** Spring Boot, PostgreSQL
 
-Tecnología: Spring Boot + PostgreSQL
+Funciones:
+- Registro de usuarios
+- Inicio de sesión
+- Manejo de roles (cliente / administrador)
+- Autenticación mediante JWT
+- Persistencia de datos en PostgreSQL
 
-Responsabilidades:
+---
 
-Registro e inicio de sesión
+### Microservicio 2: Gestión de Citas
+**Tecnologías:** Spring Boot, MongoDB
 
-Manejo de roles (cliente / administrador)
+Funciones:
+- Crear citas
+- Cancelar citas
+- Reprogramar citas
 
-Generación y validación de tokens JWT
+---
 
-Persistencia de usuarios en PostgreSQL
+### Microservicio 3: Servicios y Empleados
+**Tecnologías:** Spring Boot, PostgreSQL 
 
-2. Microservicio de Gestión de Citas
+Funciones:
+- Catálogo de servicios
+- Horarios de empleados
+- Precios
+- Disponibilidad dinámica
 
-Tecnología: Spring Boot + MongoDB
+---
 
-Responsabilidades:
+## Frontend
+**Tecnología:** Angular
 
-Crear citas
+Módulos:
+- Login y registro
+- Panel principal
+- Visualización de servicios
+- Perfil de usuario
+- Administración (empleados, horarios y servicios)
 
-Cancelar citas
+---
 
-Reprogramar citas
+## Contenedores (Docker)
 
-Gestión de calendario
+El sistema se ejecuta mediante contenedores:
 
-Notificaciones (opcional)
+- Un contenedor por cada microservicio
+- Contenedor para PostgreSQL
+- Contenedor para MongoDB
+- Contenedor para el frontend 
+---
 
-MongoDB se utiliza debido a la flexibilidad del modelo de datos para el manejo de agendas.
+## Comunicación entre Microservicios
 
-3. Microservicio de Servicios y Empleados
+- API REST
 
-Tecnología: Spring Boot + PostgreSQL o MongoDB
+---
 
-Responsabilidades:
+## Organización del equipo
 
-Catálogo de servicios
-
-Horarios de empleados
-
-Precios
-
-Disponibilidad dinámica
-
-Frontend
-
-Tecnología: Angular (microfrontend)
-
-Módulos principales:
-
-Login y registro
-
-Panel principal
-
-Calendario de citas
-
-Visualización de servicios
-
-Perfil de usuario
-
-Administración (empleados, horarios y servicios)
-
-Contenedorización
-
-Se utiliza Docker para ejecutar todos los componentes del sistema:
-
-Un contenedor por cada microservicio
-
-Contenedor de PostgreSQL
-
-Contenedor de MongoDB
-
-Contenedor del frontend Angular (opcional)
-
-Comunicación entre servicios
-
-La comunicación entre microservicios se realiza mediante:
-
-API REST
-
-OpenFeign (opcional)
-
-API Gateway / Eureka (opcional)
-
-Organización del equipo
-
-Integrante 1: Microservicio de usuarios (Spring Boot + PostgreSQL)
-
-Integrante 2: Microservicio de citas (Spring Boot + MongoDB)
-
-Integrante 3: Microservicio de servicios y empleados
+- Integrante 1: Microservicio de usuarios
+- Integrante 2: Microservicio de citas
+- Integrante 3: Microservicio de servicios y empleados
+- Integrante 4: Frontend, Docker e integración
