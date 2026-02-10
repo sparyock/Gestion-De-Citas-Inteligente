@@ -1,84 +1,104 @@
 # Gestion-De-Citas-Inteligente
-PROYECTO PROPUESTO: Plataforma de Gestión de Citas Inteligente (con 3 microservicios)
+Descripción del proyecto
 
-Ideal para salones, barberías, talleres, doctores, veterinarias, lo que quieran.
+Plataforma de gestión de citas basada en arquitectura de microservicios.
+Permite administrar reservas, usuarios, servicios y disponibilidad de empleados.
+El sistema puede adaptarse a distintos contextos como barberías, salones de belleza, talleres, consultorios médicos o veterinarias.
 
-⸻
+Arquitectura
 
-🧱 Arquitectura con 3 microservicios (como te piden)
+El sistema está compuesto por tres microservicios independientes.
 
-🔸 Microservicio 1: Usuarios y Autenticación (Spring Boot + PostgreSQL)
-	•	Maneja registro e inicio de sesión
-	•	Roles (cliente / administrador)
-	•	Token JWT
-	•	Guarda usuarios en PostgreSQL
+1. Microservicio de Usuarios y Autenticación
 
-🔸 Microservicio 2: Gestión de Citas (Spring Boot + MongoDB)
-	•	Crear cita
-	•	Cancelar cita
-	•	Reprogramar
-	•	Calendario
-	•	Notificaciones (opcional)
-	•	MongoDB es perfecto para datos flexibles como citas
+Tecnología: Spring Boot + PostgreSQL
 
-🔸 Microservicio 3: Servicios y Empleados (Spring Boot + PostgreSQL o MongoDB, tú eliges)
-	•	Servicios ofrecidos (corte, uñas, revisión, consulta)
-	•	Horarios de empleados
-	•	Precios
-	•	Disponibilidad dinámica
+Responsabilidades:
 
-⸻
+Registro e inicio de sesión
 
-🖥️ Frontend: Angular (Microfrontend obligatorio)
+Manejo de roles (cliente / administrador)
 
-Pantallas:
-	•	Login / Registro
-	•	Dashboard
-	•	Calendario de citas
-	•	Vista de servicios
-	•	Perfil
-	•	Administración (empleados, horarios, servicios)
+Generación y validación de tokens JWT
 
-⸻
+Persistencia de usuarios en PostgreSQL
 
-🐳 Docker (Obligatorio)
+2. Microservicio de Gestión de Citas
 
-Corren todo con contenedores:
-	•	Un contenedor por microservicio
-	•	Un contenedor para PostgreSQL
-	•	Uno para MongoDB
-	•	Un contenedor para Angular (opcional)
+Tecnología: Spring Boot + MongoDB
 
-⸻
+Responsabilidades:
 
-🔗 Comunicación entre microservicios
+Crear citas
 
-Usa:
-✔ REST
-✔ OpenFeign (si quieren simplificar)
-✔ Eureka / API Gateway (opcional, pero luciría mucho)
+Cancelar citas
 
-⸻
+Reprogramar citas
 
-🧪 ¿Por qué este proyecto es perfecto?
-	•	✔ Cumple TODOS los requisitos del stack
-	•	✔ Tiene 3 microservicios (como te piden)
-	•	✔ Se ve profesional para presentación
-	•	✔ No es tan complejo de programar
-	•	✔ Modular, escalable y fácil de dockerizar
-	•	✔ El frontend queda muy bonito y funcional
-	•	✔ Usan dos bases de datos diferentes, lo cual IMPRESIONA a los profes
-	•	✔ Puedes mostrar tolerancia a fallos desactivando un microservicio
-	•	✔ Es útil como proyecto real
+Gestión de calendario
 
-⸻
+Notificaciones (opcional)
 
-👥 División en grupo de 4
+MongoDB se utiliza debido a la flexibilidad del modelo de datos para el manejo de agendas.
 
-🧑‍💻 Integrante 1: Microservicio Usuarios (Spring Boot + PostgreSQL)
+3. Microservicio de Servicios y Empleados
 
-🧑‍💻 Integrante 2: Microservicio Citas (Spring Boot + MongoDB)
+Tecnología: Spring Boot + PostgreSQL o MongoDB
 
-🧑‍💻 Integrante 3: Microservicio Servicios/Empleados (Spring Boot + PostgreSQL o MongoDB)
+Responsabilidades:
 
-🧑‍🎨 Integrante 4: Angular + Docker + Integración
+Catálogo de servicios
+
+Horarios de empleados
+
+Precios
+
+Disponibilidad dinámica
+
+Frontend
+
+Tecnología: Angular (microfrontend)
+
+Módulos principales:
+
+Login y registro
+
+Panel principal
+
+Calendario de citas
+
+Visualización de servicios
+
+Perfil de usuario
+
+Administración (empleados, horarios y servicios)
+
+Contenedorización
+
+Se utiliza Docker para ejecutar todos los componentes del sistema:
+
+Un contenedor por cada microservicio
+
+Contenedor de PostgreSQL
+
+Contenedor de MongoDB
+
+Contenedor del frontend Angular (opcional)
+
+Comunicación entre servicios
+
+La comunicación entre microservicios se realiza mediante:
+
+API REST
+
+OpenFeign (opcional)
+
+API Gateway / Eureka (opcional)
+
+Organización del equipo
+
+Integrante 1: Microservicio de usuarios (Spring Boot + PostgreSQL)
+
+Integrante 2: Microservicio de citas (Spring Boot + MongoDB)
+
+Integrante 3: Microservicio de servicios y empleados
