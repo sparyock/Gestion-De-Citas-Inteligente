@@ -1,0 +1,51 @@
+# Semana 2 — Desarrollo inicial del sistema
+Durante la segunda semana se comienza la implementación del proyecto, pasando de la planeación a la construcción de la base funcional.
+
+## 1. Configuración del entorno
+-Creación del repositorio y organización por carpetas (monorepo o repos separados)
+-Configuración de GitFlow (main, develop, features)
+-Instalación y configuración de:
+-Java y Spring Boot
+-Node y Angular
+-Docker
+-PostgreSQL y MongoDB
+-Definición de variables de entorno (.env)
+
+ ## 2. Estructura base de los microservicios
+-Crear los tres proyectos Spring Boot con estructura limpia:
+controller/
+service/
+repository/
+model/
+dto/
+config/
+security/
+-Microservicios inicializados:
+Servicio de Usuarios
+Servicio de Turnos
+Servicio de Notificaciones
+-Cada uno debe:
+Ejecutar correctamente
+Tener conexión a su base de datos
+
+## 3. Base de datos. 
+Diseñar y crear los primeros modelos:
+-Usuarios (PostgreSQL)
+id
+nombre
+correo
+contraseña
+rol
+-Turnos (MongoDB)
+id
+fecha
+hora
+idUsuario
+idEmpleado
+estado
+-Eventos / Notificaciones
+id
+tipoEvento
+fecha
+mensaje
+Probar persistencia (guardar y consultar registros).
