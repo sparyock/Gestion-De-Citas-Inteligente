@@ -119,6 +119,13 @@ mvn spring-boot:run
 | AC         | Backend developer      | user-service           |
 | NG         | Documentacion          | Documentacion tecnica  |
 | DS         | Administrador Docker   | Docker y despliegue    |
-```
 
----
+
+
+## Gestión del Proyecto
+Puedes seguir el avance de las tareas, el backlog y los sprints actuales en nuestro tablero oficial:
+
+Tablero Trello:https://trello.com/b/YRJ1lK8I/gestion-de-citas-inteligente
+
+
+
