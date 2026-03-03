@@ -1,0 +1,24 @@
+services:
+  postgres-db:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin1234
+      POSTGRES_DB: usersdb
+    ports:
+      - "5432:5432"
+
+  users-service:
+    build:
+      context: ../backend/users-service
+      dockerfile: Dockerfile
+    container_name: users-service
+    depends_on:
+      - postgres-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/usersdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin1234
+    ports:
+      - "8081:8081"
