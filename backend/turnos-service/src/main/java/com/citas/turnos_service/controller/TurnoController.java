@@ -1,0 +1,22 @@
+package com.citas.turnos_service.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/turnos")
+public class TurnoController {
+
+    @GetMapping("/test")
+    public String test() {
+        return "Turnos service funcionando";
+
+    }
+    @GetMapping("/")
+public String home() {
+    return "API Turnos funcionando";
+}
+
+}
+
