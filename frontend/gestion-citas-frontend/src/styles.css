@@ -1,0 +1,71 @@
+/* You can add global styles to this file, and also import other style files */
+.card{
+transition: all 0.2s ease;
+}
+
+.card:hover{
+transform: translateY(-4px);
+box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+.card{
+background:white;
+border:2px solid #e5e7eb;
+border-radius:12px;
+padding:20px;
+transition:all .25s ease;
+}
+
+.card:hover{
+border-color:#2563eb;
+background:#eff6ff;
+transform:translateY(-3px);
+box-shadow:0 8px 18px rgba(0,0,0,0.08);
+}
+
+.card{
+background:white;
+border:2px solid #e5e7eb;
+border-radius:12px;
+padding:20px;
+transition:all .25s ease;
+}
+
+.card:hover{
+border-color:#2563eb;
+background:#eff6ff;
+transform:translateY(-3px);
+box-shadow:0 8px 18px rgba(0,0,0,0.08);
+}
+
+.layout{
+display:flex;
+}
+
+.main-content{
+flex:1;
+padding:30px;
+background:#f3f4f6;
+min-height:100vh;
+}
+
+.card{
+background:white;
+border:2px solid #e5e7eb;
+border-radius:12px;
+padding:20px;
+cursor:pointer;
+transition:all .25s ease;
+}
+
+.card:hover{
+border-color:#2563eb;
+background:#eff6ff;
+transform:translateY(-4px);
+box-shadow:0 10px 20px rgba(0,0,0,0.08);
+}
+
+.selected{
+border-color:#2563eb;
+background:#dbeafe;
+}
