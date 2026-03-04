@@ -50,6 +50,20 @@ public class TurnoService {
         return turnoRepository.findByIdUsuario(idUsuario);
     }
 
+    // ACTUALIZAR turno
+    public Turno actualizarTurno(Long idTurno, TurnoRequestDTO dto) {
+
+        Turno turno = turnoRepository.findById(idTurno)
+                .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
+
+        turno.setIdUsuario(dto.getIdUsuario());
+        turno.setEspecialidad(dto.getEspecialidad());
+        turno.setDoctor(dto.getDoctor());
+        turno.setFechaHora(dto.getFechaHora());
+
+        return turnoRepository.save(turno);
+    }
+
     // Cancelar turno
     public Turno cancelarTurno(Long idTurno) {
 
@@ -59,6 +73,15 @@ public class TurnoService {
         turno.setEstado(EstadoTurno.CANCELADO);
 
         return turnoRepository.save(turno);
+    }
+
+    // ELIMINAR turno
+    public void eliminarTurno(Long idTurno) {
+
+        Turno turno = turnoRepository.findById(idTurno)
+                .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
+
+        turnoRepository.delete(turno);
     }
 
     // Especialidades disponibles

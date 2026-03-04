@@ -23,28 +23,40 @@ public class TurnoController {
         return turnoService.crearTurno(dto);
     }
 
-    // Ver todos los turnos
+    // Obtener todos los turnos
     @GetMapping
     public List<Turno> obtenerTodosTurnos() {
         return turnoService.obtenerTodosTurnos();
     }
 
-    // Ver turno por ID
+    // Obtener turno por ID
     @GetMapping("/{idTurno}")
     public Turno obtenerTurno(@PathVariable Long idTurno) {
         return turnoService.obtenerTurnoPorId(idTurno);
     }
 
-    // Ver turnos por usuario
+    // Obtener turnos por usuario
     @GetMapping("/usuario/{idUsuario}")
     public List<Turno> obtenerTurnosUsuario(@PathVariable Long idUsuario) {
         return turnoService.obtenerTurnosUsuario(idUsuario);
     }
 
-    // Cancelar turno
+    // Actualizar turno
+    @PutMapping("/{idTurno}")
+    public Turno actualizarTurno(@PathVariable Long idTurno, @RequestBody TurnoRequestDTO dto) {
+        return turnoService.actualizarTurno(idTurno, dto);
+    }
+
+    // Cancelar turno (cambia estado a CANCELADO)
     @PutMapping("/cancelar/{idTurno}")
     public Turno cancelarTurno(@PathVariable Long idTurno) {
         return turnoService.cancelarTurno(idTurno);
+    }
+
+    // Eliminar turno
+    @DeleteMapping("/{idTurno}")
+    public void eliminarTurno(@PathVariable Long idTurno) {
+        turnoService.eliminarTurno(idTurno);
     }
 
     // Especialidades disponibles

@@ -116,7 +116,7 @@ export class SolicitarTurno {
 
   };
 
-  this.turnoStore.agregarTurno(nuevoTurno);
+  this.turnoStore.crearTurno(nuevoTurno).subscribe();
 
   this.turnoConfirmado = true;
 

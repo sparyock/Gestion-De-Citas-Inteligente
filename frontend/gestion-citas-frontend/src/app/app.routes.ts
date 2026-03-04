@@ -8,10 +8,19 @@ import { Perfil } from './pages/perfil/perfil';
 export const routes: Routes = [
 
   { path: 'inicio', component: Inicio },
-  { path: 'mis-turnos', component: MisTurnos },
+
+  {
+    path: 'mis-turnos',
+    component: MisTurnos,
+    runGuardsAndResolvers: 'always'
+  },
+
   { path: 'solicitar-turno', component: SolicitarTurno },
+
   { path: 'perfil', component: Perfil },
 
   { path: '', redirectTo: 'inicio', pathMatch: 'full' }
 
 ];
+
+
