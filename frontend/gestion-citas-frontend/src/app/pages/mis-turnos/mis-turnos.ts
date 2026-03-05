@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TurnoStoreService } from '../../services/turno-store';
@@ -8,25 +8,58 @@ import { TurnoStoreService } from '../../services/turno-store';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './mis-turnos.html',
-  styleUrl: './mis-turnos.css'
+  styleUrls: ['./mis-turnos.css']
 })
-export class MisTurnos {
+export class MisTurnos implements OnInit {
 
-  turnos: any[] = [];
+  turnos:any[] = [];
+  proximos:any[] = [];
+  historial:any[] = [];
 
   constructor(
-    private turnoStore: TurnoStoreService,
-    private router: Router
-  ) {
-    this.turnos = this.turnoStore.obtenerTurnos();
+    private turnoService: TurnoStoreService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ){}
+
+  ngOnInit(): void {
+    this.cargarTurnos();
   }
 
-  volverInicio(){
-    this.router.navigate(['/inicio']);
-  }
+  cargarTurnos(){
 
-  volverSolicitar(){
-  this.router.navigate(['/solicitar-turno']);
-}
+    console.log("Cargando turnos...");
+
+    this.turnoService.obtenerTurnos().subscribe({
+
+      next:(data:any)=>{
+
+        console.log("TURNOS:",data);
+
+        this.turnos = data || [];
+
+        this.proximos = this.turnos.filter(
+          (t:any)=> t.estado === 'PENDIENTE'
+        );
+
+        this.historial = this.turnos.filter(
+          (t:any)=> t.estado !== 'PENDIENTE'
+        );
+
+        console.log("PROXIMOS:",this.proximos);
+        console.log("HISTORIAL:",this.historial);
+
+        
+        this.cdr.detectChanges();
+
+      },
+
+      error:(err)=>{
+        console.error("ERROR:",err);
+      }
+
+    });
+
+  }
 
 }

@@ -13,72 +13,53 @@
 
 
   <!-- Próximos turnos -->
-
   <div class="card">
 
     <h3>Próximos turnos</h3>
 
-    <div class="turno">
+    <div *ngIf="proximos.length === 0">
+      No hay turnos próximos
+    </div>
 
-      <div class="info">
-        👨‍⚕️ Medicina General <br>
-        TUE 12 - 16:00
+    <div *ngFor="let turno of proximos">
+
+      <div class="turno">
+        <div class="info">
+  👨‍⚕️ {{ turno.doctor }} <br>
+  {{ turno.fechaHora | date:'dd/MM/yyyy, HH:mm':'UTC' }}
+</div>
+
+        <span class="estado pendiente">
+          {{ turno.estado }}
+        </span>
       </div>
-
-      <span class="estado confirmado">
-        Confirmado
-      </span>
 
     </div>
 
   </div>
 
 
-
   <!-- Historial -->
-
   <div class="card">
 
     <h3>Historial</h3>
 
-    <div class="turno">
-
-      <div class="info">
-        👨‍⚕️ Dr. Andrés Muñoz <br>
-        16/01/2026 - 10:00 am
-      </div>
-
-      <span class="estado confirmado">
-        Confirmado
-      </span>
-
+    <div *ngIf="historial.length === 0">
+      No hay historial
     </div>
 
+    <div *ngFor="let turno of historial">
 
-    <div class="turno">
+      <div class="turno">
+        <div class="info">
+  👨‍⚕️ {{ turno.doctor }} <br>
+  {{ turno.fechaHora | date:'dd/MM/yyyy, HH:mm':'UTC' }}
+</div>
 
-      <div class="info">
-        👩‍⚕️ Dra. Laura Soto <br>
-        20/02/2026 - 10:00 am
+        <span class="estado cancelado">
+          {{ turno.estado }}
+        </span>
       </div>
-
-      <span class="estado pendiente">
-        Pendiente
-      </span>
-
-    </div>
-
-
-    <div class="turno">
-
-      <div class="info">
-        👨‍⚕️ Dr. Felipe Ruiz <br>
-        05/10/2025 - 10:00 am
-      </div>
-
-      <span class="estado cancelado">
-        Cancelado
-      </span>
 
     </div>
 

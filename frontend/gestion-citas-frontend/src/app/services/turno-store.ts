@@ -1,18 +1,26 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TurnoStoreService {
 
-  turnos:any[] = [];
+  private apiUrl = 'http://localhost:8080/turnos';
 
-  agregarTurno(turno:any){
-    this.turnos.push(turno);
+  constructor(private http: HttpClient) {}
+
+  obtenerTurnos(): Observable<any> {
+  return this.http.get(this.apiUrl);
+}
+
+  crearTurno(turno: any): Observable<any> {
+    return this.http.post(this.apiUrl, turno);
   }
 
-  obtenerTurnos(){
-    return this.turnos;
+  cancelarTurno(idTurno:number): Observable<any>{
+    return this.http.put(this.apiUrl + '/cancelar/' + idTurno, {});
   }
 
 }
