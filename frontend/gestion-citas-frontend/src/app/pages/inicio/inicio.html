@@ -1,0 +1,124 @@
+<div class="inicio">
+
+  <div class="header">
+
+    <div>
+      <h2>Inicio</h2>
+      <p class="fecha">{{ fechaActual }}</p>
+    </div>
+
+    <button class="btn-solicitar" (click)="irSolicitarTurno()">
+      + Solicitar Turno
+    </button>
+
+  </div>
+
+
+  <!-- TARJETA AZUL -->
+
+  <div class="welcome">
+
+    <div>
+      <p class="saludo">Hola de nuevo,</p>
+      <h3>{{ nombreUsuario }} 👋</h3>
+      <p class="sub">
+        No tienes turnos pendientes para hoy.
+      </p>
+    </div>
+
+    <div class="icono">
+      📅
+    </div>
+
+  </div>
+
+
+  <!-- SECCIÓN TARJETAS -->
+
+  <div class="grid">
+
+    <!-- PRÓXIMOS TURNOS -->
+
+    <div class="card">
+
+      <div class="card-header">
+        <h3>Mis Próximos Turnos</h3>
+        <span class="link">Ver todos →</span>
+      </div>
+
+      <div class="empty">
+        
+        <p>No tienes turnos pendientes</p>
+      </div>
+
+      <div class="calendar">
+
+        <div class="month">Marzo 2026</div>
+
+       
+      </div>
+
+    </div>
+
+
+    <!-- TURNOS RECIENTES -->
+
+    <div class="card">
+
+      <div class="card-header">
+        <h3>Mis Turnos Recientes</h3>
+        <span class="link">Ver historial →</span>
+      </div>
+
+      <div class="turno">
+
+        <div class="avatar">👨‍⚕️</div>
+
+        <div class="info">
+          <strong>Dr. Andrés Muñoz</strong>
+          <p>16/01/2026 · 10:00 · Medicina General</p>
+        </div>
+
+        <span class="estado confirmado">
+          Confirmado
+        </span>
+
+      </div>
+
+
+      <div class="turno">
+
+        <div class="avatar">👨‍⚕️</div>
+
+        <div class="info">
+          <strong>Dra. Laura Soto</strong>
+          <p>20/02/2026 · 10:00 · Cardiología</p>
+        </div>
+
+        <span class="estado pendiente">
+          Pendiente
+        </span>
+
+      </div>
+
+
+      <div class="turno">
+
+        <div class="avatar">👨‍⚕️</div>
+
+        <div class="info">
+          <strong>Dr. Felipe Ruiz</strong>
+          <p>05/10/2025 · 10:00 · Dermatología</p>
+        </div>
+
+        <span class="estado cancelado">
+          Cancelado
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
