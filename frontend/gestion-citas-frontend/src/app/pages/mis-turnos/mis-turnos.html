@@ -1,0 +1,68 @@
+<div class="turnos-container">
+
+  <div class="header-turnos">
+    <div>
+      <h2>Mis Turnos</h2>
+      <p>Historial completo de citas</p>
+    </div>
+
+    <button routerLink="/solicitar-turno" class="btn-nuevo">
+      + Nuevo Turno
+    </button>
+  </div>
+
+
+  <!-- Próximos turnos -->
+  <div class="card">
+
+    <h3>Próximos turnos</h3>
+
+    <div *ngIf="proximos.length === 0">
+      No hay turnos próximos
+    </div>
+
+    <div *ngFor="let turno of proximos">
+
+      <div class="turno">
+        <div class="info">
+  👨‍⚕️ {{ turno.doctor }} <br>
+  {{ turno.fechaHora | date:'dd/MM/yyyy, HH:mm':'UTC' }}
+</div>
+
+        <span class="estado pendiente">
+          {{ turno.estado }}
+        </span>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Historial -->
+  <div class="card">
+
+    <h3>Historial</h3>
+
+    <div *ngIf="historial.length === 0">
+      No hay historial
+    </div>
+
+    <div *ngFor="let turno of historial">
+
+      <div class="turno">
+        <div class="info">
+  👨‍⚕️ {{ turno.doctor }} <br>
+  {{ turno.fechaHora | date:'dd/MM/yyyy, HH:mm':'UTC' }}
+</div>
+
+        <span class="estado cancelado">
+          {{ turno.estado }}
+        </span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
