@@ -4,9 +4,11 @@ import { Sidebar } from './layout/sidebar/sidebar';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [RouterOutlet, Sidebar],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
+
 }
