@@ -1,0 +1,17 @@
+[33mee144ab[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/docker-config[m[33m, [m[1;31morigin/feature/docker-config[m[33m)[m Configuración Docker lista
+[33m3c7fdd3[m Merge remote-tracking branch 'origin/feature/backend-login' into feature/docker-config
+[33m96260cb[m[33m ([m[1;31morigin/feature/backend-login[m[33m)[m Backend: agregado users-service con CRUD completo y configuración inicial
+[33mccea2ac[m  agregar reglas del repositorio
+[33md0c41a7[m  reglas de trabajo del repositorio
+[33m7ad876a[m[33m ([m[1;32mdevelop[m[33m)[m chore: estructura inicial del proyecto
+[33m468f415[m[33m ([m[1;32mmain[m[33m)[m Update and rename Planeacion.doc to Sprint-2.doc
+[33m1a438fb[m Create Planeacion.doc
+[33m90a9ac1[m Update headings in README.md for consistency
+[33md833f91[m Format README.md for better structure and clarity
+[33m7743b82[m Add links to app, API, and database in README
+[33me634d64[m Update README.md
+[33m7f4d6b3[m Update README with project overview and structure
+[33m544fc6f[m Update README.md
+[33mf8953cd[m Update README.md
+[33m2ebcc32[m Update README with project proposal details
+[33m76fee82[m Initial commit

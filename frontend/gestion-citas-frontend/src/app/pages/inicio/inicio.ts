@@ -11,6 +11,8 @@ export class Inicio {
 
   nombreUsuario = "Carlos Rojas";
  fechaActual: string = '';
+  turnos: any[] = [];
+
 
   ngOnInit() {
 
