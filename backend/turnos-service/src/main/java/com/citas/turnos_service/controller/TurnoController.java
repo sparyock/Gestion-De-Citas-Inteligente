@@ -3,6 +3,9 @@ package com.citas.turnos_service.controller;
 import com.citas.turnos_service.dto.TurnoRequestDTO;
 import com.citas.turnos_service.model.Turno;
 import com.citas.turnos_service.service.TurnoService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -20,23 +23,30 @@ public class TurnoController {
 
     // Crear turno
     @PostMapping
-    public ResponseEntity<Turno> crearTurno(@RequestBody TurnoRequestDTO dto) {
+public ResponseEntity<Turno> crearTurno(
+        @Valid @RequestBody TurnoRequestDTO dto) {
 
     Turno turno = turnoService.crearTurno(dto);
 
     return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(turno);
-    }
-
+}
     // Obtener todos los turnos
      @GetMapping
-    public ResponseEntity<List<Turno>> obtenerTodosTurnos() {
+public ResponseEntity<List<Turno>> obtenerTodosTurnos(
+        @RequestParam(required = false) Long idUsuario) {
 
-    List<Turno> turnos = turnoService.obtenerTodosTurnos();
+    List<Turno> turnos;
+
+    if (idUsuario != null) {
+        turnos = turnoService.obtenerTurnosUsuario(idUsuario);
+    } else {
+        turnos = turnoService.obtenerTodosTurnos();
+    }
 
     return ResponseEntity.ok(turnos);
-    }
+}
 
     // Obtener turno por ID
     @GetMapping("/{id}")
