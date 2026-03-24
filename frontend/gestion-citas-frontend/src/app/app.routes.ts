@@ -4,6 +4,8 @@ import { Inicio } from './pages/inicio/inicio';
 import { MisTurnos } from './pages/mis-turnos/mis-turnos';
 import { SolicitarTurno } from './pages/solicitar-turno/solicitar-turno';
 import { Perfil } from './pages/perfil/perfil';
+import { Notificaciones } from './pages/notificaciones/notificaciones';
+
 
 export const routes: Routes = [
 
@@ -19,7 +21,11 @@ export const routes: Routes = [
 
   { path: 'perfil', component: Perfil },
 
+  { path: 'notificaciones', component: Notificaciones },
+
   { path: '', redirectTo: 'inicio', pathMatch: 'full' }
+
+  
 
 ];
 

@@ -23,6 +23,11 @@ export const serverRoutes: ServerRoute[] = [
   },
 
   {
+    path: 'notificaciones',
+    renderMode: RenderMode.Server
+  },
+
+  {
     path: '',
     renderMode: RenderMode.Server
   }
