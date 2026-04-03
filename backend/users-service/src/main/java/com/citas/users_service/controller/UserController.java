@@ -61,13 +61,5 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    // 🔹 LOGIN (lo mantenemos)
-    @PostMapping("/login")
-    public ResponseEntity<UserResponseDTO> login(
-            @Valid @RequestBody UserRequestDTO request){
-
-        return ResponseEntity.ok(
-                userService.login(request.getEmail(), request.getPassword())
-        );
-    }
+    // ADR-003: login movido a AuthController (/auth/login)
 }

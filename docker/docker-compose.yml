@@ -1,13 +1,24 @@
+<<<<<<< Updated upstream
 services:
   postgres-db:
     image: postgres:15
     container_name: postgres-db
+=======
+version: '3.8'
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: citas-postgres
+>>>>>>> Stashed changes
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin1234
       POSTGRES_DB: usersdb
     ports:
       - "5432:5432"
+<<<<<<< Updated upstream
 
   users-service:
     build:
@@ -22,3 +33,29 @@ services:
       SPRING_DATASOURCE_PASSWORD: admin1234
     ports:
       - "8081:8081"
+=======
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - citas-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: citas-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@citas.com
+      PGADMIN_DEFAULT_PASSWORD: admin1234
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - citas-network
+
+volumes:
+  postgres_data:
+
+networks:
+  citas-network:
+    driver: bridge
+>>>>>>> Stashed changes
