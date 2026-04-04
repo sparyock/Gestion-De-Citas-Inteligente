@@ -1,0 +1,148 @@
+<div class="notificaciones-contenedor">
+  <h1>Notificaciones</h1>
+  <p class="fecha">martes, 24 de marzo de 2026</p>
+
+  <div class="banner">
+    <div>
+      <p class="saludo">Hola de nuevo,</p>
+      <h2>Carlos Rojas 👋</h2>
+      <p class="mensaje">Estás al día con todas tus notificaciones.</p>
+    </div>
+    <div class="icono-banner">🔔</div>
+  </div>
+
+  <div class="tarjetas-resumen">
+    <div class="tarjeta">
+      <p>Total</p>
+      <h3>{{ total }}</h3>
+      <span>notificaciones</span>
+    </div>
+
+    <div class="tarjeta">
+      <p>Sin leer</p>
+      <h3>{{ sinLeer }}</h3>
+      <span>pendientes</span>
+    </div>
+
+    <div class="tarjeta">
+      <p>Confirmados</p>
+      <h3>{{ confirmados }}</h3>
+      <span>este mes</span>
+    </div>
+
+    <div class="tarjeta">
+      <p>Cancelados</p>
+      <h3>{{ cancelados }}</h3>
+      <span>este mes</span>
+    </div>
+  </div>
+
+  <div class="centro-notificaciones">
+    <div class="centro-header">
+      <h3>Centro de notificaciones</h3>
+
+      <div class="filtros">
+        <button
+          class="filtro"
+          [class.activo]="filtroActivo === 'Todas'"
+          (click)="cambiarFiltro('Todas')"
+        >
+          Todas
+        </button>
+
+        <button
+          class="filtro"
+          [class.activo]="filtroActivo === 'Sin leer'"
+          (click)="cambiarFiltro('Sin leer')"
+        >
+          Sin leer
+        </button>
+
+        <button
+          class="filtro"
+          [class.activo]="filtroActivo === 'Confirmados'"
+          (click)="cambiarFiltro('Confirmados')"
+        >
+          Confirmados
+        </button>
+
+        <button
+          class="filtro"
+          [class.activo]="filtroActivo === 'Cancelados'"
+          (click)="cambiarFiltro('Cancelados')"
+        >
+          Cancelados
+        </button>
+
+        <button class="marcar-leidas" (click)="marcarTodasLeidas()">
+          Marcar todas leídas
+        </button>
+      </div>
+    </div>
+    
+<div class="estado-vacio" *ngIf="notificacionesFiltradas.length === 0">
+  <div class="estado-vacio-icono">🔔</div>
+  <h4>No tienes notificaciones en esta categoría</h4>
+  <p>Todo está al día por ahora.</p>
+</div>
+
+    <div
+      class="item-notificacion"
+      *ngFor="let n of notificacionesFiltradas"
+      [ngClass]="{
+        exito: n.tipo === 'confirmado',
+        info: n.tipo === 'recordatorio' || n.tipo === 'reprogramado',
+        peligro: n.tipo === 'cancelado'
+      }"
+    >
+      <div class="icono-item">
+        {{
+          n.tipo === 'confirmado'
+            ? '✓'
+            : n.tipo === 'cancelado'
+            ? '✕'
+            : '🕒'
+        }}
+      </div>
+
+      <div class="contenido-item">
+        <h4>{{ n.titulo }}</h4>
+        <p>{{ n.descripcion }}</p>
+
+        <div class="meta-item">
+          <span>{{ n.tiempo }}</span>
+
+          <span
+            class="etiqueta"
+            [ngClass]="{
+              'etiqueta-exito': n.tipo === 'confirmado',
+              'etiqueta-info': n.tipo === 'recordatorio' || n.tipo === 'reprogramado',
+              'etiqueta-peligro': n.tipo === 'cancelado'
+            }"
+          >
+            {{
+              n.tipo === 'confirmado'
+                ? 'Confirmado'
+                : n.tipo === 'cancelado'
+                ? 'Cancelado'
+                : n.tipo === 'reprogramado'
+                ? 'Reprogramado'
+                : 'Recordatorio'
+            }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="simulador-eventos">
+    <h4>SIMULAR EVENTO DEL MICROSERVICIO → POST /api/notificaciones/evento</h4>
+
+    <div class="botones-simulador">
+      <button class="btn btn-exito" (click)="simularEvento('confirmado')">Turno confirmado</button>
+      <button class="btn btn-peligro" (click)="simularEvento('cancelado')">Turno cancelado</button>
+      <button class="btn btn-warning" (click)="simularEvento('reprogramado')">Turno reprogramado</button>
+      <button class="btn btn-primario" (click)="simularEvento('recordatorio')">Recordatorio de turno</button>
+    </div>
+  </div>
+</div>

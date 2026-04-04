@@ -49,9 +49,8 @@ public class TurnoService {
     }
 
     // Ver turno por ID
-    public Turno obtenerTurnoPorId(Long idTurno) {
-        return turnoRepository.findById(idTurno)
-                .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
+    public Turno obtenerTurnoPorId(Long id) {
+        return turnoRepository.findById(id).orElse(null);
     }
 
     // Ver turnos por usuario

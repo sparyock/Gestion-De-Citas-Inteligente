@@ -1,56 +1,58 @@
 package com.citas.turnos_service.controller;
 
-<<<<<<< Updated upstream
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-=======
 import com.citas.turnos_service.dto.TurnoRequestDTO;
 import com.citas.turnos_service.dto.TurnoResponseDTO;
 import com.citas.turnos_service.model.Turno;
 import com.citas.turnos_service.service.TurnoService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
->>>>>>> Stashed changes
 
 @RestController
 @RequestMapping("/turnos")
 public class TurnoController {
 
-    @GetMapping("/test")
-    public String test() {
-        return "Turnos service funcionando";
+    private final TurnoService turnoService;
 
+    public TurnoController(TurnoService turnoService) {
+        this.turnoService = turnoService;
     }
-    @GetMapping("/")
-public String home() {
-    return "API Turnos funcionando";
-}
 
-<<<<<<< Updated upstream
-}
-
-=======
     // Crear turno — ADR-004: retorna TurnoResponseDTO
     @PostMapping
-    public ResponseEntity<TurnoResponseDTO> crearTurno(@RequestBody TurnoRequestDTO dto) {
+    public ResponseEntity<TurnoResponseDTO> crearTurno(
+            @Valid @RequestBody TurnoRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(turnoService.crearTurno(dto));
     }
 
     // Obtener todos los turnos
     @GetMapping
-    public List<Turno> obtenerTodosTurnos() {
-        return turnoService.obtenerTodosTurnos();
+    public ResponseEntity<List<Turno>> obtenerTodosTurnos(
+            @RequestParam(required = false) Long idUsuario) {
+
+        List<Turno> turnos;
+
+        if (idUsuario != null) {
+            turnos = turnoService.obtenerTurnosUsuario(idUsuario);
+        } else {
+            turnos = turnoService.obtenerTodosTurnos();
+        }
+
+        return ResponseEntity.ok(turnos);
     }
 
     // Obtener turno por ID
-    @GetMapping("/{idTurno}")
-    public Turno obtenerTurno(@PathVariable Long idTurno) {
-        return turnoService.obtenerTurnoPorId(idTurno);
+    @GetMapping("/{id}")
+    public ResponseEntity<Turno> obtenerTurnoPorId(@PathVariable Long id) {
+        Turno turno = turnoService.obtenerTurnoPorId(id);
+        if (turno == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(turno);
     }
 
     // Obtener turnos por usuario
@@ -65,7 +67,7 @@ public String home() {
         return turnoService.actualizarTurno(idTurno, dto);
     }
 
-    // Cancelar turno
+    // Cancelar turno (cambia estado a CANCELADO)
     @PutMapping("/cancelar/{idTurno}")
     public Turno cancelarTurno(@PathVariable Long idTurno) {
         return turnoService.cancelarTurno(idTurno);
@@ -102,4 +104,3 @@ public String home() {
     }
 
 }
->>>>>>> Stashed changes
