@@ -1,9 +1,3 @@
-<<<<<<< Updated upstream
-services:
-  postgres-db:
-    image: postgres:15
-    container_name: postgres-db
-=======
 version: '3.8'
 
 services:
@@ -11,31 +5,19 @@ services:
   postgres:
     image: postgres:16
     container_name: citas-postgres
->>>>>>> Stashed changes
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin1234
       POSTGRES_DB: usersdb
     ports:
       - "5432:5432"
-<<<<<<< Updated upstream
-
-  users-service:
-    build:
-      context: ../backend/users-service
-      dockerfile: Dockerfile
-    container_name: users-service
-    depends_on:
-      - postgres-db
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/usersdb
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: admin1234
-    ports:
-      - "8081:8081"
-=======
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - citas-network
 
@@ -52,10 +34,68 @@ services:
     networks:
       - citas-network
 
+  users-service:
+    build:
+      context: ../backend/users-service
+      dockerfile: Dockerfile
+    container_name: citas-users-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/usersdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin1234
+    ports:
+      - "8081:8081"
+    networks:
+      - citas-network
+
+  turnos-service:
+    build:
+      context: ../backend/turnos-service
+      dockerfile: Dockerfile
+    container_name: citas-turnos-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/turnosdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin1234
+    ports:
+      - "8082:8082"
+    networks:
+      - citas-network
+
+  api-gateway:
+    build:
+      context: ../backend/api-gateway
+      dockerfile: Dockerfile
+    container_name: citas-api-gateway
+    depends_on:
+      - users-service
+      - turnos-service
+    ports:
+      - "8080:8080"
+    networks:
+      - citas-network
+
+  frontend:
+    build:
+      context: ../frontend/gestion-citas-frontend
+      dockerfile: Dockerfile
+    container_name: citas-frontend
+    depends_on:
+      - api-gateway
+    ports:
+      - "80:80"
+    networks:
+      - citas-network
+
 volumes:
   postgres_data:
 
 networks:
   citas-network:
     driver: bridge
->>>>>>> Stashed changes
