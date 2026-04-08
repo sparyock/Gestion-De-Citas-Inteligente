@@ -1,8 +1,12 @@
-.layout{
-  display:flex;
+.layout {
+  display: flex;
+  min-height: 100vh;
 }
 
-.content{
-  flex:1;
-  padding:20px;
+.main-content {
+  flex: 1;
+}
+
+.full-width {
+  width: 100%;
 }

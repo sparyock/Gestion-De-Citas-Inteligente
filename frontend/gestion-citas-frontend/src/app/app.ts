@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { Sidebar } from './layout/sidebar/sidebar';
 
 @Component({
@@ -10,5 +11,17 @@ import { Sidebar } from './layout/sidebar/sidebar';
   styleUrl: './app.css'
 })
 export class App {
+  mostrarSidebar = true;
 
+  constructor(private router: Router) {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        const rutaActual = this.router.url;
+        this.mostrarSidebar = rutaActual !== '/login' && rutaActual !== '/registro';
+      });
+
+    const rutaInicial = this.router.url;
+    this.mostrarSidebar = rutaInicial !== '/login' && rutaInicial !== '/registro';
+  }
 }

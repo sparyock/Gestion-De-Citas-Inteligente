@@ -1,7 +1,9 @@
 package com.citas.users_service.dto;
 
+import com.citas.users_service.model.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class UserRequestDTO {
 
@@ -15,9 +17,11 @@ public class UserRequestDTO {
     @NotBlank(message = "La contraseña es obligatoria")
     private String password;
 
+    @NotNull(message = "El rol es obligatorio")
+    private Role rol;
+
     public UserRequestDTO() {}
 
-    // Getters y Setters
     public String getNombre() {
         return nombre;
     }
@@ -40,5 +44,13 @@ public class UserRequestDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRol() {
+        return rol;
+    }
+
+    public void setRol(Role rol) {
+        this.rol = rol;
     }
 }
