@@ -21,5 +21,4 @@ public class TurnoRequestDTO {
     @NotNull(message = "La fecha es obligatoria")
     @Future(message = "La fecha debe ser futura")
     private LocalDateTime fechaHora;
-
 }

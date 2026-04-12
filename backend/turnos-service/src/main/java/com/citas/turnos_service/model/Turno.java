@@ -1,35 +1,36 @@
 package com.citas.turnos_service.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "turnos")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Turno {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_turno")
     private Long idTurno;
 
-    private Long idUsuario;
-
-    private String especialidad;
-
+    @Column(nullable = false)
     private String doctor;
 
-    private LocalDateTime fechaHora;
+    @Column(nullable = false)
+    private String especialidad;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private EstadoTurno estado;
 
+    @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
 
-     @PrePersist
-    public void asignarFechaCreacion() {
-        this.fechaCreacion = LocalDateTime.now();
-    }
+    @Column(name = "fecha_hora", nullable = false)
+    private LocalDateTime fechaHora;
+
+    @Column(name = "id_usuario", nullable = false)
+    private Long idUsuario;
 }

@@ -12,9 +12,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            .csrf(csrf -> csrf.disable()) // 🔥 Desactiva CSRF (necesario para Postman)
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll() // Permite todas las rutas
+                .anyRequest().permitAll()
             );
 
         return http.build();
