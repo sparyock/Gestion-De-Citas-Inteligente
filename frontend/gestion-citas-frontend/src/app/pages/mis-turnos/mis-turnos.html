@@ -1,56 +1,68 @@
-<div class="mis-turnos-container">
-  <div class="header">
+<div class="turnos-container">
+
+  <div class="header-turnos">
     <div>
-      <h1>Mis Turnos</h1>
+      <h2>Mis Turnos</h2>
       <p>Historial completo de citas</p>
     </div>
 
-    <button class="btn-nuevo" (click)="nuevoTurno()">+ Nuevo Turno</button>
+    <button routerLink="/solicitar-turno" class="btn-nuevo">
+      + Nuevo Turno
+    </button>
   </div>
 
+
+  <!-- Próximos turnos -->
   <div class="card">
-    <h2>Próximos turnos</h2>
 
-    <div *ngIf="cargando">
-      Cargando turnos...
+    <h3>Próximos turnos</h3>
+
+    <div *ngIf="proximos.length === 0">
+      No hay turnos próximos
     </div>
 
-    <div *ngIf="!cargando && error">
-      {{ error }}
-    </div>
+    <div *ngFor="let turno of proximos">
 
-    <div *ngIf="!cargando && !error && turnos.length === 0">
-      No tienes turnos registrados.
-    </div>
+      <div class="turno">
+        <div class="info">
+  👨‍⚕️ {{ turno.doctor }} <br>
+  {{ turno.fechaHora | date:'dd/MM/yyyy, HH:mm':'UTC' }}
+</div>
 
-    <div *ngIf="!cargando && !error && turnos.length > 0">
-      <div *ngFor="let turno of turnos" class="turno-item">
-        <div>
-          <strong>{{ turno.doctor }}</strong><br>
-          {{ turno.especialidad }}<br>
-          {{ formatearFecha(turno.fechaHora) }}
-        </div>
-
-        <div class="acciones-turno">
-          <span
-            class="estado"
-            [ngClass]="{
-              'pendiente': esPendiente(turno.estado),
-              'cancelado': esCancelado(turno.estado),
-              'confirmado': esConfirmado(turno.estado)
-            }"
-          >
-            {{ turno.estado }}
-          </span>
-
-          <button
-            *ngIf="turno.estado === 'PENDIENTE'"
-            (click)="cancelarTurno(turno.idTurno)"
-          >
-            Cancelar
-          </button>
-        </div>
+        <span class="estado pendiente">
+          {{ turno.estado }}
+        </span>
       </div>
+
     </div>
+
   </div>
+
+
+  <!-- Historial -->
+  <div class="card">
+
+    <h3>Historial</h3>
+
+    <div *ngIf="historial.length === 0">
+      No hay historial
+    </div>
+
+    <div *ngFor="let turno of historial">
+
+      <div class="turno">
+        <div class="info">
+  👨‍⚕️ {{ turno.doctor }} <br>
+  {{ turno.fechaHora | date:'dd/MM/yyyy, HH:mm':'UTC' }}
+</div>
+
+        <span class="estado cancelado">
+          {{ turno.estado }}
+        </span>
+      </div>
+
+    </div>
+
+  </div>
+
 </div>
