@@ -2,6 +2,7 @@ package com.citas.users_service.service;
 
 import com.citas.users_service.dto.UserRequestDTO;
 import com.citas.users_service.dto.UserResponseDTO;
+import com.citas.users_service.model.Role;
 import com.citas.users_service.model.User;
 import com.citas.users_service.repository.UserRepository;
 
@@ -16,72 +17,90 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    // 🔹 CREATE
     public UserResponseDTO create(UserRequestDTO request) {
 
+        String email = request.getEmail().trim().toLowerCase();
+        String password = request.getPassword().trim();
+
+        if (userRepository.existsByEmail(email)) {
+            throw new RuntimeException("Ya existe un usuario con ese correo");
+        }
+
         User user = new User();
-        user.setNombre(request.getNombre());
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setNombre(request.getNombre().trim());
+        user.setEmail(email);
+        user.setPassword(password);
+
+        if (request.getRol() == null) {
+            user.setRol(Role.CLIENTE);
+        } else {
+            user.setRol(request.getRol());
+        }
 
         User saved = userRepository.save(user);
 
         return new UserResponseDTO(
                 saved.getId(),
                 saved.getNombre(),
-                saved.getEmail()
+                saved.getEmail(),
+                saved.getRol()
         );
     }
 
-    // 🔹 GET ALL
     public List<UserResponseDTO> findAll() {
-
         return userRepository.findAll()
                 .stream()
                 .map(user -> new UserResponseDTO(
                         user.getId(),
                         user.getNombre(),
-                        user.getEmail()))
+                        user.getEmail(),
+                        user.getRol()))
                 .toList();
     }
 
-    // 🔹 GET BY ID
     public UserResponseDTO findById(Long id) {
-
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         return new UserResponseDTO(
                 user.getId(),
                 user.getNombre(),
-                user.getEmail()
+                user.getEmail(),
+                user.getRol()
         );
     }
 
-    // 🔹 UPDATE
     public UserResponseDTO update(Long id, UserRequestDTO request) {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        user.setNombre(request.getNombre());
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        String email = request.getEmail().trim().toLowerCase();
+        String password = request.getPassword().trim();
+
+        if (!user.getEmail().equals(email) && userRepository.existsByEmail(email)) {
+            throw new RuntimeException("Ya existe un usuario con ese correo");
+        }
+
+        user.setNombre(request.getNombre().trim());
+        user.setEmail(email);
+        user.setPassword(password);
+
+        if (request.getRol() != null) {
+            user.setRol(request.getRol());
+        }
 
         User updated = userRepository.save(user);
 
-
-        
         return new UserResponseDTO(
                 updated.getId(),
                 updated.getNombre(),
-                updated.getEmail()
+                updated.getEmail(),
+                updated.getRol()
         );
     }
 
-    // 🔹 DELETE
     public void delete(Long id) {
-
         if (!userRepository.existsById(id)) {
             throw new RuntimeException("Usuario no encontrado");
         }
@@ -89,20 +108,23 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    // 🔹 LOGIN
     public UserResponseDTO login(String email, String password) {
 
-        User user = userRepository.findByEmail(email)
+        String cleanEmail = email.trim().toLowerCase();
+        String cleanPassword = password.trim();
+
+        User user = userRepository.findByEmail(cleanEmail)
                 .orElseThrow(() -> new RuntimeException("Credenciales inválidas"));
 
-        if (!user.getPassword().equals(password)) {
+        if (!user.getPassword().trim().equals(cleanPassword)) {
             throw new RuntimeException("Credenciales inválidas");
         }
 
         return new UserResponseDTO(
                 user.getId(),
                 user.getNombre(),
-                user.getEmail()
+                user.getEmail(),
+                user.getRol()
         );
     }
 }

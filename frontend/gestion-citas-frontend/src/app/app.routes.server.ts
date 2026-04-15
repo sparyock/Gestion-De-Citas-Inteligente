@@ -1,30 +1,40 @@
 import { ServerRoute, RenderMode } from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
-
-  {
-    path: 'inicio',
-    renderMode: RenderMode.Server
-  },
-
-  {
-    path: 'mis-turnos',
-    renderMode: RenderMode.Server
-  },
-
-  {
-    path: 'solicitar-turno',
-    renderMode: RenderMode.Server
-  },
-
-  {
-    path: 'perfil',
-    renderMode: RenderMode.Server
-  },
-
   {
     path: '',
-    renderMode: RenderMode.Server
+    renderMode: RenderMode.Client
+  },
+  {
+    path: 'login',
+    renderMode: RenderMode.Client
+  },
+  {
+    path: 'registro',
+    renderMode: RenderMode.Client
+  },
+  {
+    path: 'inicio',
+    renderMode: RenderMode.Client
+  },
+  {
+    path: 'mis-turnos',
+    renderMode: RenderMode.Client
+  },
+  {
+    path: 'solicitar-turno',
+    renderMode: RenderMode.Client
+  },
+  {
+    path: 'perfil',
+    renderMode: RenderMode.Client
+  },
+  {
+    path: 'notificaciones',
+    renderMode: RenderMode.Client
+  },
+  {
+    path: '**',
+    renderMode: RenderMode.Client
   }
-
 ];

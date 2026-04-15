@@ -1,5 +1,6 @@
 package com.citas.users_service.controller;
 
+import com.citas.users_service.dto.loginRequestDTO;
 import com.citas.users_service.dto.UserRequestDTO;
 import com.citas.users_service.dto.UserResponseDTO;
 import com.citas.users_service.service.UserService;
@@ -10,21 +11,24 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    // Endpoint de prueba
-    @GetMapping("/test")
-    public String test() {
-        return "Backend funcionando correctamente";
+    @GetMapping("/health")
+    public ResponseEntity<Map<String, String>> health() {
+        return ResponseEntity.ok(Map.of(
+                "service", "users-service",
+                "status", "UP"
+        ));
     }
 
-    // 🔹 CREATE
     @PostMapping
     public ResponseEntity<UserResponseDTO> createUser(
             @Valid @RequestBody UserRequestDTO request) {
@@ -33,38 +37,33 @@ public class UserController {
                 .body(userService.create(request));
     }
 
-    // 🔹 GET ALL
     @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> getAllUsers(){
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
         return ResponseEntity.ok(userService.findAll());
     }
 
-    // 🔹 GET BY ID
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUser(@PathVariable Long id){
+    public ResponseEntity<UserResponseDTO> getUser(@PathVariable Long id) {
         return ResponseEntity.ok(userService.findById(id));
     }
 
-    // 🔹 UPDATE
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> updateUser(
             @PathVariable Long id,
-            @Valid @RequestBody UserRequestDTO request){
+            @Valid @RequestBody UserRequestDTO request) {
 
         return ResponseEntity.ok(userService.update(id, request));
     }
 
-    // 🔹 DELETE
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    // 🔹 LOGIN (lo mantenemos)
     @PostMapping("/login")
     public ResponseEntity<UserResponseDTO> login(
-            @Valid @RequestBody UserRequestDTO request){
+            @Valid @RequestBody loginRequestDTO request) {
 
         return ResponseEntity.ok(
                 userService.login(request.getEmail(), request.getPassword())

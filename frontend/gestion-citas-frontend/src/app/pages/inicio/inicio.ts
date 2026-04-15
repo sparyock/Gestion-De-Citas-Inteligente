@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UsuarioService, Usuario } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-inicio',
@@ -7,13 +8,17 @@ import { Router } from '@angular/router';
   templateUrl: './inicio.html',
   styleUrl: './inicio.css'
 })
-export class Inicio {
+export class Inicio implements OnInit {
+  usuario: Usuario | null = null;
+  fechaActual: string = '';
+  turnos: any[] = [];
 
-  nombreUsuario = "Carlos Rojas";
- fechaActual: string = '';
+  constructor(
+    private router: Router,
+    private usuarioService: UsuarioService
+  ) {}
 
-  ngOnInit() {
-
+  ngOnInit(): void {
     const hoy = new Date();
 
     this.fechaActual = hoy.toLocaleDateString('es-ES', {
@@ -23,14 +28,15 @@ export class Inicio {
       year: 'numeric'
     });
 
+    this.usuario = this.usuarioService.obtenerSesion();
+
+    if (!this.usuario) {
+      this.router.navigate(['/login']);
+      return;
+    }
   }
 
-
-
-  constructor(private router: Router){}
-
-  irSolicitarTurno(){
+  irSolicitarTurno(): void {
     this.router.navigate(['/solicitar-turno']);
   }
-
 }
