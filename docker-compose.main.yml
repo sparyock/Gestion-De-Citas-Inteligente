@@ -1,0 +1,75 @@
+services:
+  users-db-main:
+    image: postgres:16
+    container_name: users-db-main
+    environment:
+      POSTGRES_DB: usersdb_main
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    ports:
+      - "5453:5432"
+    volumes:
+      - usersdb_main_data:/var/lib/postgresql/data
+    networks:
+      - main-net
+
+  turnos-db-main:
+    image: postgres:16
+    container_name: turnos-db-main
+    environment:
+      POSTGRES_DB: turnosdb_main
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    ports:
+      - "5454:5432"
+    volumes:
+      - turnosdb_main_data:/var/lib/postgresql/data
+    networks:
+      - main-net
+
+  users-service-main:
+    build:
+      context: ./backend/users-service
+    container_name: users-service-main
+    depends_on:
+      - users-db-main
+    environment:
+      SPRING_PROFILES_ACTIVE: main
+    ports:
+      - "8281:8281"
+    networks:
+      - main-net
+
+  turnos-service-main:
+    build:
+      context: ./backend/turnos-service
+    container_name: turnos-service-main
+    depends_on:
+      - turnos-db-main
+    environment:
+      SPRING_PROFILES_ACTIVE: main
+    ports:
+      - "8282:8282"
+    networks:
+      - main-net
+
+  api-gateway-main:
+    build:
+      context: ./backend/api-gateway
+    container_name: api-gateway-main
+    depends_on:
+      - users-service-main
+      - turnos-service-main
+    environment:
+      SPRING_PROFILES_ACTIVE: main
+    ports:
+      - "8280:8280"
+    networks:
+      - main-net
+
+volumes:
+  usersdb_main_data:
+  turnosdb_main_data:
+
+networks:
+  main-net:

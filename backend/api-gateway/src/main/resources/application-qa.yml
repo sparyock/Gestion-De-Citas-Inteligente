@@ -9,12 +9,12 @@ spring:
     gateway:
       routes:
         - id: users-service
-          uri: http://localhost:8181
+          uri: http://users-service-qa:8181
           predicates:
             - Path=/users/**
 
         - id: turnos-service
-          uri: http://localhost:8182
+          uri: http://turnos-service-qa:8182
           predicates:
             - Path=/turnos/**
 
