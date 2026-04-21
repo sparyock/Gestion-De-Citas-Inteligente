@@ -1,0 +1,33 @@
+server:
+  port: 8180
+
+spring:
+  application:
+    name: api-gateway-qa
+
+  cloud:
+    gateway:
+      routes:
+        - id: users-service
+          uri: http://users-service-qa:8181
+          predicates:
+            - Path=/users/**
+
+        - id: turnos-service
+          uri: http://turnos-service-qa:8182
+          predicates:
+            - Path=/turnos/**
+
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:4200"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
