@@ -1,75 +1,64 @@
 services:
   users-db-qa:
-  image: postgres:16
-  container_name: users-db-qa
-
-  environment:
-    POSTGRES_DB: usersdb_qa
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: postgres123
-
-  ports:
-    - "5435:5432"
-
-  networks:
-    - qa-net
+    image: postgres:16
+    container_name: users-db-qa
+    environment:
+      POSTGRES_DB: usersdb_qa
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    ports:
+      - "5443:5432"
+    volumes:
+      - usersdb_qa_data:/var/lib/postgresql/data
+    networks:
+      - qa-net
 
   turnos-db-qa:
-  image: postgres:16
-  container_name: turnos-db-qa
+    image: postgres:16
+    container_name: turnos-db-qa
+    environment:
+      POSTGRES_DB: turnosdb_qa
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    ports:
+      - "5444:5432"
+    volumes:
+      - turnosdb_qa_data:/var/lib/postgresql/data
+    networks:
+      - qa-net
 
-  environment:
-    POSTGRES_DB: turnosdb_qa
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: postgres123
-
-  ports:
-    - "5436:5432"
-
-  networks:
-    - qa-net
-
- users-service-qa:
-  build:
-    context: ./backend/users-service
-    dockerfile: Dockerfile
-
-  container_name: users-service-qa
-
-  depends_on:
-    - users-db-qa
-
-  environment:
-    SPRING_PROFILES_ACTIVE: qa
-
-  ports:
-    - "8181:8181"
-
-  networks:
-    - qa-net
+  users-service-qa:
+    build:
+      context: ./backend/users-service
+      dockerfile: Dockerfile
+    container_name: users-service-qa
+    depends_on:
+      - users-db-qa
+    environment:
+      SPRING_PROFILES_ACTIVE: qa
+    ports:
+      - "8181:8181"
+    networks:
+      - qa-net
 
   turnos-service-qa:
-  build:
-    context: ./backend/turnos-service
-    dockerfile: Dockerfile
-
-  container_name: turnos-service-qa
-
-  depends_on:
-    - turnos-db-qa
-
-  environment:
-    SPRING_PROFILES_ACTIVE: qa
-
-  ports:
-    - "8182:8182"
-
-  networks:
-    - qa-net
+    build:
+      context: ./backend/turnos-service
+      dockerfile: Dockerfile
+    container_name: turnos-service-qa
+    depends_on:
+      - turnos-db-qa
+    environment:
+      SPRING_PROFILES_ACTIVE: qa
+    ports:
+      - "8182:8182"
+    networks:
+      - qa-net
 
   api-gateway-qa:
     build:
       context: ./backend/api-gateway
+      dockerfile: Dockerfile
     container_name: api-gateway-qa
     depends_on:
       - users-service-qa
