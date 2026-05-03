@@ -18,6 +18,11 @@ spring:
           predicates:
             - Path=/turnos/**
 
+        - id: notifications-service
+          uri: http://notifications-service-qa:8183
+          predicates:
+            - Path=/notifications/**
+
       globalcors:
         corsConfigurations:
           '[/**]':
