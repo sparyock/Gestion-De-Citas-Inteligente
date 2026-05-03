@@ -9,14 +9,19 @@ spring:
     gateway:
       routes:
         - id: users-service
-          uri: http://localhost:8281
+          uri: http://users-service-main:8281
           predicates:
             - Path=/users/**
 
         - id: turnos-service
-          uri: http://localhost:8282
+          uri: http://turnos-service-main:8282
           predicates:
             - Path=/turnos/**
+
+        - id: notifications-service
+          uri: http://notifications-service-main:8283
+          predicates:
+            - Path=/notifications/**
 
       globalcors:
         corsConfigurations:
