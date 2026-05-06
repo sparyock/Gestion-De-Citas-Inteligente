@@ -1,0 +1,49 @@
+name: CI - Gestion de Citas Inteligente
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - qa
+      - main
+
+  push:
+    branches:
+      - develop
+      - qa
+      - main
+
+jobs:
+  build-backend:
+    name: Build Backend Services
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Compilar API Gateway
+        run: |
+          cd backend/api-gateway
+          mvn clean package -DskipTests
+
+      - name: Compilar Users Service
+        run: |
+          cd backend/users-service
+          mvn clean package -DskipTests
+
+      - name: Compilar Turnos Service
+        run: |
+          cd backend/turnos-service
+          mvn clean package -DskipTests
+
+      - name: Compilar Notifications Service
+        run: |
+          cd backend/notifications-service
+          mvn clean package -DskipTests
