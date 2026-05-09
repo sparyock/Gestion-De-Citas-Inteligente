@@ -84,3 +84,46 @@ Los ambientes QA y Main deben quedar activos con sus servicios y bases de datos 
 ## Conclusion
 
 Esta historia aporta una guia practica para demostrar que el proyecto puede ejecutarse en varios ambientes mediante Docker Compose, manteniendo separados los puertos y servicios de QA y Main.
+
+## Evidencias realizadas
+
+Las siguientes evidencias fueron tomadas para comprobar que los ambientes QA y Main
+## Evidencias realizadas
+
+Las siguientes evidencias fueron tomadas para comprobar que los ambientes QA y Main pueden ejecutarse correctamente con Docker Compose, usando archivos de configuración separados y puertos diferentes para evitar conflictos entre entornos.
+
+Las capturas se encuentran guardadas en la carpeta `capturashu3`.
+
+### Evidencia 1: Validacion del docker-compose QA
+
+Esta evidencia muestra la validacion del archivo `docker-compose.qa.yml` mediante el comando `docker compose config`, comprobando que la configuracion del ambiente QA no presenta errores.
+
+![Validacion docker compose QA](./capturashu3/1.png)
+
+### Evidencia 2: Levantamiento del ambiente QA
+
+Esta evidencia muestra la ejecucion del comando para construir y levantar los contenedores del ambiente QA con Docker Compose.
+
+![Ambiente QA levantado](./capturashu3/2.png)
+
+### Evidencia 3: Validacion del docker-compose Main
+
+Esta evidencia muestra la validacion del archivo `docker-compose.main.yml`, comprobando que la configuracion del ambiente Main se encuentra correctamente definida.
+
+![Validacion docker compose Main](./capturashu3/3.png)
+
+### Evidencia 4: Levantamiento del ambiente Main
+
+Esta evidencia muestra la ejecucion del comando para construir y levantar los contenedores del ambiente Main con Docker Compose.
+
+![Ambiente Main levantado](./capturashu3/4.png)
+
+### Evidencia 5: Puertos QA y Main activos
+
+Esta evidencia muestra los contenedores activos y los puertos expuestos de los ambientes QA y Main mediante el comando `docker ps --format`.
+
+![Puertos QA y Main](./capturashu3/5.png)
+
+## Cierre de evidencias
+
+Con estas capturas se comprueba que los ambientes QA y Main fueron validados y levantados correctamente mediante Docker Compose. Tambien se evidencia que cada ambiente utiliza puertos diferentes para el API Gateway, los microservicios y las bases de datos, permitiendo ejecutar varios entornos del proyecto sin modificar el codigo fuente ni generar conflictos de puertos.
