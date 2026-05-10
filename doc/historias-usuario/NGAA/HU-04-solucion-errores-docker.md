@@ -90,3 +90,43 @@ El equipo debe poder identificar errores basicos de Docker y aplicar soluciones 
 ## Conclusion
 
 Esta historia ayuda a reducir el tiempo de solucion de problemas durante pruebas y exposiciones, dejando comandos claros para diagnosticar contenedores, logs y puertos ocupados.
+
+## Evidencias realizadas
+
+Las siguientes evidencias fueron tomadas para comprobar que la guia de solucion de errores comunes en Docker permite diagnosticar problemas relacionados con contenedores, logs, puertos ocupados y reinicio de servicios.
+
+Las capturas se encuentran guardadas en la carpeta `capturashu4`.
+
+### Evidencia 1: Contenedores activos con docker ps
+
+Esta evidencia muestra los contenedores activos del proyecto mediante el comando `docker ps`.
+
+![Contenedores activos](./capturashu4/1.png)
+
+### Evidencia 2: Contenedores activos y detenidos con docker ps -a
+
+Esta evidencia muestra todos los contenedores existentes, incluyendo los que se encuentran activos y detenidos.
+
+![Contenedores activos y detenidos](./capturashu4/2.png)
+
+### Evidencia 3: Revision de logs de un contenedor
+
+Esta evidencia muestra la revision de logs de un contenedor del proyecto, lo cual permite identificar errores o validar que el servicio inicio correctamente.
+
+![Logs de contenedor](./capturashu4/3.png)
+
+### Evidencia 4: Revision de puerto ocupado con netstat
+
+Esta evidencia muestra la verificacion de un puerto utilizado por el proyecto mediante el comando `netstat`, permitiendo identificar si un puerto esta ocupado por algun proceso.
+
+![Revision de puerto](./capturashu4/4.png)
+
+### Evidencia 5: Reinicio de un servicio especifico
+
+Esta evidencia muestra el reinicio de un servicio especifico usando Docker Compose, sin necesidad de levantar nuevamente todo el ambiente.
+
+![Reinicio de servicio](./capturashu4/5.png)
+
+## Cierre de evidencias
+
+Con estas capturas se comprueba que la guia permite revisar contenedores activos y detenidos, consultar logs, identificar puertos ocupados y reiniciar servicios especificos. Esto ayuda a solucionar errores comunes de Docker antes de una entrega o exposicion, sin modificar el codigo fuente del proyecto.
