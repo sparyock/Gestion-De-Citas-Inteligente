@@ -1,0 +1,13 @@
+server:
+  port: 8284
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27019/auditdb_main
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

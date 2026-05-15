@@ -83,6 +83,37 @@ services:
     networks:
       - develop-net
 
+  audit-db-develop:
+    image: mongo:7
+    container_name: audit-db-develop
+    ports:
+      - "27017:27017"
+    volumes:
+      - auditdb_develop_data:/data/db
+    networks:
+      - develop-net
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  audit-service-develop:
+    build:
+      context: ./backend/audit-service
+    container_name: audit-service-develop
+    depends_on:
+      audit-db-develop:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: develop
+      SPRING_DATA_MONGODB_URI: mongodb://audit-db-develop:27017/auditdb_develop
+    ports:
+      - "8084:8084"
+    networks:
+      - develop-net
+    restart: unless-stopped
+
   api-gateway-develop:
     build:
       context: ./backend/api-gateway
@@ -91,6 +122,7 @@ services:
       - users-service-develop
       - turnos-service-develop
       - notifications-service-develop
+      - audit-service-develop
     environment:
       SPRING_PROFILES_ACTIVE: develop
     ports:
@@ -102,6 +134,7 @@ volumes:
   usersdb_develop_data:
   turnosdb_develop_data:
   notificationsdb_develop_data:
+  auditdb_develop_data:
 
 networks:
   develop-net:
