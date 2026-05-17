@@ -43,43 +43,14 @@
 
 <div class="especialidades">
 
-  <div class="card"
-  [class.selected]="especialidadSeleccionada === 'Medicina General'"
-  (click)="seleccionarEspecialidad('Medicina General')">
-
-    <h3>🩺 Medicina General</h3>
-    <p>Consulta y diagnóstico</p>
-
-  </div>
-
-
-  <div class="card"
-  [class.selected]="especialidadSeleccionada === 'Cardiología'"
-  (click)="seleccionarEspecialidad('Cardiología')">
-
-    <h3>❤️ Cardiología</h3>
-    <p>Corazón y circulación</p>
-
-  </div>
-
-
-  <div class="card"
-  [class.selected]="especialidadSeleccionada === 'Dermatología'"
-  (click)="seleccionarEspecialidad('Dermatología')">
-
-    <h3>🧴 Dermatología</h3>
-    <p>Piel y tejidos</p>
-
-  </div>
-
-
-  <div class="card"
-  [class.selected]="especialidadSeleccionada === 'Pediatría'"
-  (click)="seleccionarEspecialidad('Pediatría')">
-
-    <h3>👶 Pediatría</h3>
-    <p>Salud infantil</p>
-
+  <div
+    class="card"
+    *ngFor="let esp of especialidades"
+    [class.selected]="especialidadSeleccionada === esp"
+    (click)="seleccionarEspecialidad(esp)"
+  >
+    <h3>{{ iconoEspecialidad(esp) }} {{ esp }}</h3>
+    <p>Seleccionar especialidad</p>
   </div>
 
 </div>
@@ -100,18 +71,18 @@
 <div class="lista-doctores">
 
 <div
-*ngFor="let doc of doctores[especialidadSeleccionada]"
+*ngFor="let doc of doctoresLista"
 class="doctor-card"
-[class.selected]="doctorSeleccionado === doc.nombre"
-(click)="seleccionarDoctor(doc.nombre)">
+[class.selected]="doctorSeleccionado === doc"
+(click)="seleccionarDoctor(doc)">
 
 <div class="doctor-info">
 
 <div class="avatar">👨‍⚕️</div>
 
 <div class="doctor-texto">
-<h4>{{doc.nombre}}</h4>
-<p>{{especialidadSeleccionada}} · {{doc.experiencia}} años de experiencia</p>
+<h4>{{ doc }}</h4>
+<p>{{ especialidadSeleccionada }}</p>
 </div>
 
 </div>
@@ -151,10 +122,10 @@ Siguiente →
 <button
 class="dia"
 *ngFor="let d of dias"
-[class.selected]="fechaSeleccionada === d"
+[class.selected]="fechaSeleccionada === d.fecha"
 (click)="seleccionarFecha(d)">
 
-{{d}}
+{{ d.label }}
 
 </button>
 
@@ -215,11 +186,13 @@ Siguiente →
 
 <p>⏰ <strong>Hora:</strong> {{horaSeleccionada}}</p>
 
-<p>👤 <strong>Paciente:</strong> Carlos Rojas</p>
+<p>👤 <strong>Paciente:</strong> {{ nombrePaciente }}</p>
 
 </div>
 
 <textarea placeholder="Motivo de la consulta (opcional)..."></textarea>
+
+<p class="error" *ngIf="error" style="color:red">{{ error }}</p>
 
 <br>
 

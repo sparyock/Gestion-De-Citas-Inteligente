@@ -5,7 +5,7 @@
   <div class="banner">
     <div>
       <p class="saludo">Hola de nuevo,</p>
-      <h2>Carlos Rojas 👋</h2>
+      <h2>{{ usuarioNombre }} 👋</h2>
       <p class="mensaje">Estás al día con todas tus notificaciones.</p>
     </div>
     <div class="icono-banner">🔔</div>
@@ -136,13 +136,13 @@
   </div>
 
   <div class="simulador-eventos">
-    <h4>SIMULAR EVENTO DEL MICROSERVICIO → POST /api/notificaciones/evento</h4>
+    <h4>Crear notificación (POST /notifications vía gateway)</h4>
 
     <div class="botones-simulador">
-      <button class="btn btn-exito" (click)="simularEvento('confirmado')">Turno confirmado</button>
-      <button class="btn btn-peligro" (click)="simularEvento('cancelado')">Turno cancelado</button>
-      <button class="btn btn-warning" (click)="simularEvento('reprogramado')">Turno reprogramado</button>
-      <button class="btn btn-primario" (click)="simularEvento('recordatorio')">Recordatorio de turno</button>
+      <button class="btn btn-exito" (click)="crearEvento('confirmado')">Turno confirmado</button>
+      <button class="btn btn-peligro" (click)="crearEvento('cancelado')">Turno cancelado</button>
+      <button class="btn btn-warning" (click)="crearEvento('reprogramado')">Turno reprogramado</button>
+      <button class="btn btn-primario" (click)="crearEvento('recordatorio')">Recordatorio de turno</button>
     </div>
   </div>
 </div>

@@ -1,0 +1,43 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway-develop
+
+  cloud:
+    gateway:
+      routes:
+        - id: users-service
+          uri: http://users-service-develop:8081
+          predicates:
+            - Path=/users,/users/**
+
+        - id: turnos-service
+          uri: http://turnos-service-develop:8082
+          predicates:
+            - Path=/turnos,/turnos/**
+
+        - id: notifications-service
+          uri: http://notifications-service-develop:8083
+          predicates:
+            - Path=/notifications,/notifications/**
+
+        - id: audit-service
+          uri: http://audit-service-develop:8084
+          predicates:
+            - Path=/audit,/audit/**
+
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:4200"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
