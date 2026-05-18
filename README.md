@@ -668,36 +668,8 @@ Actualmente el sistema permite:
 
 ## 👥 Equipo de trabajo
 
-Proyecto académico desarrollado por el equipo de Gestión de Citas Inteligente para la asignatura Sistemas Distribuidos.
+Proyecto académico desarrollado por el equipo de Gestión de Citas Inteligente para la asignatura Sistemas Distribuidos, el cuál está conformado por:
+Yeison Andres Scarpeta Diaz, Nicolás Gabriel Álvarez Aguirre, Dayana Sofía Mendes Perafán y Andrea Catalina Cortés Ramires.
 
 ---
 
-## 📚 Notas importantes
-
-- El frontend debe consumir siempre por API Gateway.
-- No se deben usar directamente los puertos internos de los microservicios desde Angular.
-- No se recomienda levantar los tres ambientes al mismo tiempo en equipos con poca memoria RAM.
-- Si `http://localhost:8080`, `8180` o `8280` muestra Whitelabel `404`, es normal. Se deben probar rutas como `/users`, `/turnos`, `/notifications` o `/audit/health`.
-- Liquibase debe mostrar los changesets en estado `EXECUTED` y `databasechangeloglock.locked = f`.
-
----
-
-## ✅ Evidencias recomendadas para entrega
-
-- `docker ps` con los contenedores activos.
-- Frontend abierto en el navegador.
-- Registro de usuario.
-- Creación de turno.
-- Reprogramación de turno.
-- Cancelación de turno.
-- Notificaciones generadas.
-- Historial de auditoría.
-- Consultas en PostgreSQL.
-- Consulta de `audit_logs` en MongoDB.
-- Validación de Liquibase con `databasechangelog` y `databasechangeloglock`.
-
----
-
-## 📄 Licencia
-
-Proyecto académico desarrollado con fines educativos.
