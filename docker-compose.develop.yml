@@ -133,6 +133,8 @@ services:
   frontend-develop:
     build:
       context: ./frontend/gestion-citas-frontend
+      args:
+        API_GATEWAY_URL: http://localhost:8080
     container_name: frontend-develop
     depends_on:
       - api-gateway-develop

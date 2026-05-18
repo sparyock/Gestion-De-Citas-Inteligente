@@ -23,11 +23,17 @@ spring:
           predicates:
             - Path=/notifications,/notifications/**
 
+        - id: audit-service
+          uri: http://audit-service-qa:8184
+          predicates:
+            - Path=/audit,/audit/**
+
       globalcors:
         corsConfigurations:
           '[/**]':
             allowedOrigins:
               - "http://localhost:4200"
+              - "http://localhost:4210"
             allowedMethods:
               - GET
               - POST

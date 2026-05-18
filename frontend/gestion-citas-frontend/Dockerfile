@@ -8,8 +8,9 @@ RUN npm ci
 
 COPY . .
 
-# El navegador llama al gateway publicado en el host (localhost:8080)
-RUN npm run build
+ARG API_GATEWAY_URL=http://localhost:8080
+RUN sed -i "s|http://localhost:8080|${API_GATEWAY_URL}|g" src/app/config/api.config.ts \
+  && npm run build
 
 # Etapa 2: servir archivos estáticos con nginx
 FROM nginx:1.27-alpine
