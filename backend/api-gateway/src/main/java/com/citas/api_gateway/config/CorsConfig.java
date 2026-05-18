@@ -14,7 +14,16 @@ public class CorsConfig {
 
         CorsConfiguration config = new CorsConfiguration();
 
+        // Frontend develop - Angular
         config.addAllowedOrigin("http://localhost:4200");
+
+        // Frontend QA - Angular Docker
+        config.addAllowedOrigin("http://localhost:4210");
+
+        // Frontend MAIN - Angular Docker
+        config.addAllowedOrigin("http://localhost:4220");
+
+        // Otros frontends usados en pruebas
         config.addAllowedOrigin("http://localhost:5173");
         config.addAllowedOrigin("http://localhost:3000");
         config.addAllowedOrigin("http://localhost:8080");

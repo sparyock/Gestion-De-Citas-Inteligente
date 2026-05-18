@@ -1,0 +1,52 @@
+<div class="inicio">
+
+  <div class="header">
+    <div>
+      <h2>Inicio</h2>
+      <p class="fecha">{{ fechaActual }}</p>
+    </div>
+    <button class="btn-solicitar" (click)="irSolicitarTurno()">+ Solicitar Turno</button>
+  </div>
+
+  <div class="welcome">
+    <div>
+      <p class="saludo">Hola de nuevo,</p>
+      <h3>{{ usuario?.nombre || 'Usuario' }} 👋</h3>
+      <p class="sub" *ngIf="proximos.length === 0">No tienes turnos próximos por ahora</p>
+      <p class="sub" *ngIf="proximos.length === 1">Tienes 1 turno próximo</p>
+      <p class="sub" *ngIf="proximos.length > 1">Tienes {{ proximos.length }} turnos próximos</p>
+    </div>
+    <div class="icono">📅</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-header"><h3>Mis Próximos Turnos</h3></div>
+      <div class="empty" *ngIf="!cargandoTurnos && proximos.length === 0"><p>No tienes turnos pendientes</p></div>
+      <p *ngIf="cargandoTurnos">Cargando turnos...</p>
+      <p *ngIf="errorTurnos" style="color: #c0392b">{{ errorTurnos }}</p>
+      <div class="turno" *ngFor="let turno of proximos">
+        <div class="avatar">👨‍⚕️</div>
+        <div class="info">
+          <strong>{{ turno.doctor }}</strong>
+          <p>{{ formatDateTime(turno.fechaHora) }} · {{ turno.especialidad }}</p>
+        </div>
+        <span class="estado" [ngClass]="claseEstado(turno.estado)">{{ turno.estado }}</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h3>Mis Turnos Recientes</h3></div>
+      <div class="empty" *ngIf="!cargandoTurnos && recientes.length === 0"><p>No hay turnos registrados</p></div>
+      <div class="turno" *ngFor="let turno of recientes">
+        <div class="avatar">👨‍⚕️</div>
+        <div class="info">
+          <strong>{{ turno.doctor }}</strong>
+          <p>{{ formatDateTime(turno.fechaHora) }} · {{ turno.especialidad }}</p>
+        </div>
+        <span class="estado" [ngClass]="claseEstado(turno.estado)">{{ turno.estado }}</span>
+      </div>
+    </div>
+  </div>
+
+</div>

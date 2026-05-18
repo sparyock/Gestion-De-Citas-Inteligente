@@ -41,48 +41,6 @@ services:
     networks:
       - develop-net
 
-  users-service-develop:
-    build:
-      context: ./backend/users-service
-    container_name: users-service-develop
-    depends_on:
-      - users-db-develop
-    environment:
-      SPRING_PROFILES_ACTIVE: develop
-    ports:
-      - "8081:8081"
-    networks:
-      - develop-net
-
-  turnos-service-develop:
-    build:
-      context: ./backend/turnos-service
-    container_name: turnos-service-develop
-    depends_on:
-      - turnos-db-develop
-    environment:
-      SPRING_PROFILES_ACTIVE: develop
-    ports:
-      - "8082:8082"
-    networks:
-      - develop-net
-
-  notifications-service-develop:
-    build:
-      context: ./backend/notifications-service
-    container_name: notifications-service-develop
-    depends_on:
-      - notifications-db-develop
-    environment:
-      SPRING_PROFILES_ACTIVE: develop
-      SPRING_DATASOURCE_URL: jdbc:postgresql://notifications-db-develop:5432/notificationsdb_develop
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: yeison
-    ports:
-      - "8083:8083"
-    networks:
-      - develop-net
-
   audit-db-develop:
     image: mongo:7
     container_name: audit-db-develop
@@ -98,9 +56,61 @@ services:
       timeout: 5s
       retries: 10
 
+  users-service-develop:
+    build:
+      context: ./backend/users-service
+      dockerfile: Dockerfile
+    container_name: users-service-develop
+    depends_on:
+      - users-db-develop
+    environment:
+      SPRING_PROFILES_ACTIVE: develop
+      SPRING_DATASOURCE_URL: jdbc:postgresql://users-db-develop:5432/usersdb_develop
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: yeison
+    ports:
+      - "8081:8081"
+    networks:
+      - develop-net
+
+  turnos-service-develop:
+    build:
+      context: ./backend/turnos-service
+      dockerfile: Dockerfile
+    container_name: turnos-service-develop
+    depends_on:
+      - turnos-db-develop
+    environment:
+      SPRING_PROFILES_ACTIVE: develop
+      SPRING_DATASOURCE_URL: jdbc:postgresql://turnos-db-develop:5432/turnosdb_develop
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: yeison
+    ports:
+      - "8082:8082"
+    networks:
+      - develop-net
+
+  notifications-service-develop:
+    build:
+      context: ./backend/notifications-service
+      dockerfile: Dockerfile
+    container_name: notifications-service-develop
+    depends_on:
+      - notifications-db-develop
+    environment:
+      SPRING_PROFILES_ACTIVE: develop
+      SPRING_DATASOURCE_URL: jdbc:postgresql://notifications-db-develop:5432/notificationsdb_develop
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: yeison
+    ports:
+      - "8083:8083"
+    networks:
+      - develop-net
+
   audit-service-develop:
     build:
       context: ./backend/audit-service
+      dockerfile: Dockerfile
     container_name: audit-service-develop
     depends_on:
       audit-db-develop:
@@ -117,6 +127,7 @@ services:
   api-gateway-develop:
     build:
       context: ./backend/api-gateway
+      dockerfile: Dockerfile
     container_name: api-gateway-develop
     depends_on:
       - users-service-develop
@@ -129,6 +140,19 @@ services:
       - "8080:8080"
     networks:
       - develop-net
+
+  frontend-develop:
+    build:
+      context: ./frontend/gestion-citas-frontend
+      dockerfile: Dockerfile
+    container_name: frontend-develop
+    depends_on:
+      - api-gateway-develop
+    ports:
+      - "4200:80"
+    networks:
+      - develop-net
+    restart: unless-stopped
 
 volumes:
   usersdb_develop_data:

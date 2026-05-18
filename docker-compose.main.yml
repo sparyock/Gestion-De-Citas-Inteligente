@@ -163,6 +163,21 @@ services:
       - main-net
     restart: unless-stopped
 
+  frontend-main:
+    build:
+      context: ./frontend/gestion-citas-frontend
+      dockerfile: Dockerfile
+      args:
+        API_GATEWAY_URL: http://localhost:8280
+    container_name: frontend-main
+    depends_on:
+      - api-gateway-main
+    ports:
+      - "4220:80"
+    networks:
+      - main-net
+    restart: unless-stopped
+
 volumes:
   usersdb_main_data:
   turnosdb_main_data:

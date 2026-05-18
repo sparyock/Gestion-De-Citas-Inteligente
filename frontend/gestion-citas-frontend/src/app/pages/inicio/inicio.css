@@ -1,0 +1,150 @@
+.inicio{
+padding:30px;
+}
+
+/* header */
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+}
+
+.fecha{
+color:#6b7280;
+font-size:14px;
+}
+
+/* botón */
+
+.btn-solicitar{
+background:#2563eb;
+color:white;
+border:none;
+padding:10px 16px;
+border-radius:8px;
+cursor:pointer;
+}
+
+/* tarjeta azul */
+
+.welcome{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:linear-gradient(90deg,#1e3a8a,#2563eb);
+color:white;
+padding:25px;
+border-radius:14px;
+margin-bottom:25px;
+}
+
+.saludo{
+font-size:14px;
+opacity:.9;
+}
+
+.sub{
+opacity:.8;
+font-size:13px;
+}
+
+.icono{
+font-size:40px;
+opacity:.6;
+}
+
+/* grid */
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+/* cards */
+
+.card{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+
+.card-header{
+display:flex;
+justify-content:space-between;
+margin-bottom:15px;
+}
+
+.link{
+color:#2563eb;
+font-size:13px;
+cursor:pointer;
+}
+
+/* empty */
+
+.empty{
+text-align:center;
+color:#9ca3af;
+margin:20px 0;
+}
+
+/* turnos */
+
+.turno{
+display:flex;
+align-items:center;
+gap:15px;
+padding:12px 0;
+border-bottom:1px solid #eee;
+}
+
+.avatar{
+background:#eef2ff;
+padding:8px;
+border-radius:50%;
+}
+
+.info p{
+font-size:12px;
+color:#6b7280;
+}
+
+/* estados */
+
+.estado{
+padding:4px 10px;
+border-radius:12px;
+font-size:12px;
+}
+
+.confirmado{
+background:#d1fae5;
+color:#065f46;
+}
+
+.pendiente{
+background:#fef3c7;
+color:#92400e;
+}
+
+.cancelado{
+background:#fee2e2;
+color:#991b1b;
+}
+
+.sin-turnos{
+  text-align: center;
+  padding: 30px;
+  color: #777;
+}
+
+.turno-card{
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 10px;
+}
