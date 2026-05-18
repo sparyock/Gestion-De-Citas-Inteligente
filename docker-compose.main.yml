@@ -56,15 +56,34 @@ services:
       timeout: 5s
       retries: 10
 
+  audit-db-main:
+    image: mongo:7
+    container_name: audit-db-main
+    ports:
+      - "27019:27017"
+    volumes:
+      - auditdb_main_data:/data/db
+    networks:
+      - main-net
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval \"db.runCommand({ ping: 1 }).ok\""]
+      interval: 10s
+      timeout: 10s
+      retries: 15
+
   users-service-main:
     build:
       context: ./backend/users-service
+      dockerfile: Dockerfile
     container_name: users-service-main
     depends_on:
       users-db-main:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: main
+      SPRING_DATASOURCE_URL: jdbc:postgresql://users-db-main:5432/usersdb_main
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: yeison
     ports:
       - "8281:8281"
     networks:
@@ -74,12 +93,16 @@ services:
   turnos-service-main:
     build:
       context: ./backend/turnos-service
+      dockerfile: Dockerfile
     container_name: turnos-service-main
     depends_on:
       turnos-db-main:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: main
+      SPRING_DATASOURCE_URL: jdbc:postgresql://turnos-db-main:5432/turnosdb_main
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: yeison
     ports:
       - "8282:8282"
     networks:
@@ -89,6 +112,7 @@ services:
   notifications-service-main:
     build:
       context: ./backend/notifications-service
+      dockerfile: Dockerfile
     container_name: notifications-service-main
     depends_on:
       notifications-db-main:
@@ -104,14 +128,33 @@ services:
       - main-net
     restart: unless-stopped
 
+  audit-service-main:
+    build:
+      context: ./backend/audit-service
+      dockerfile: Dockerfile
+    container_name: audit-service-main
+    depends_on:
+      audit-db-main:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: main
+      SPRING_DATA_MONGODB_URI: mongodb://audit-db-main:27017/auditdb_main
+    ports:
+      - "8284:8284"
+    networks:
+      - main-net
+    restart: unless-stopped
+
   api-gateway-main:
     build:
       context: ./backend/api-gateway
+      dockerfile: Dockerfile
     container_name: api-gateway-main
     depends_on:
       - users-service-main
       - turnos-service-main
       - notifications-service-main
+      - audit-service-main
     environment:
       SPRING_PROFILES_ACTIVE: main
     ports:
@@ -124,6 +167,7 @@ volumes:
   usersdb_main_data:
   turnosdb_main_data:
   notificationsdb_main_data:
+  auditdb_main_data:
 
 networks:
   main-net:
