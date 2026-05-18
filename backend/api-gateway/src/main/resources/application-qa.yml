@@ -11,17 +11,17 @@ spring:
         - id: users-service
           uri: http://users-service-qa:8181
           predicates:
-            - Path=/users/**
+            - Path=/users,/users/**
 
         - id: turnos-service
           uri: http://turnos-service-qa:8182
           predicates:
-            - Path=/turnos/**
+            - Path=/turnos,/turnos/**
 
         - id: notifications-service
           uri: http://notifications-service-qa:8183
           predicates:
-            - Path=/notifications/**
+            - Path=/notifications,/notifications/**
 
       globalcors:
         corsConfigurations:

@@ -2,6 +2,7 @@ import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, timeout } from 'rxjs';
+import { API_GATEWAY_URL } from '../config/api.config';
 
 export type RolUsuario = 'CLIENTE' | 'ADMIN';
 
@@ -36,7 +37,7 @@ export interface LoginRequest {
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiUrl = 'http://localhost:8081/users';
+  private apiUrl = `${API_GATEWAY_URL}/users`;
   private platformId = inject(PLATFORM_ID);
 
   constructor(private http: HttpClient) {}

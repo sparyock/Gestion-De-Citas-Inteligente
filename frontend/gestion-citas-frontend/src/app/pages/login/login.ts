@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { UsuarioService } from '../../services/usuario.service';
+import { AuditService } from '../../services/audit.service';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ export class Login {
 
   constructor(
     private usuarioService: UsuarioService,
+    private auditService: AuditService,
     private router: Router
   ) {}
 
@@ -44,6 +46,15 @@ export class Login {
       );
 
       this.usuarioService.guardarSesion(usuario);
+      this.auditService
+        .registrar({
+          idUsuario: usuario.id,
+          accion: 'LOGIN',
+          descripcion: `Inicio de sesión: ${usuario.email}`,
+          servicioOrigen: 'frontend',
+          recurso: 'users'
+        })
+        .subscribe();
       this.cargando = false;
 
       await this.router.navigate(['/inicio']);

@@ -21,6 +21,10 @@ public class TurnoService {
     // Crear turno desde DTO
     public Turno crearTurno(TurnoRequestDTO dto) {
 
+        if (dto.getFechaHora() == null || !dto.getFechaHora().isAfter(LocalDateTime.now())) {
+            throw new IllegalArgumentException("La fecha y hora deben ser futuras");
+        }
+
         Turno turno = new Turno();
 
         turno.setIdUsuario(dto.getIdUsuario());

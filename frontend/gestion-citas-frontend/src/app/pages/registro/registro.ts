@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { UsuarioService, RolUsuario } from '../../services/usuario.service';
+import { AuditService } from '../../services/audit.service';
 
 @Component({
   selector: 'app-registro',
@@ -22,6 +23,7 @@ export class Registro {
 
   constructor(
     private usuarioService: UsuarioService,
+    private auditService: AuditService,
     private router: Router
   ) {}
 
@@ -50,6 +52,15 @@ export class Registro {
     }).subscribe({
       next: (usuario) => {
         this.usuarioService.guardarSesion(usuario);
+        this.auditService
+          .registrar({
+            idUsuario: usuario.id,
+            accion: 'REGISTRO',
+            descripcion: `Usuario registrado: ${usuario.email}`,
+            servicioOrigen: 'frontend',
+            recurso: 'users'
+          })
+          .subscribe();
         this.cargando = false;
         this.router.navigate(['/inicio']);
       },

@@ -1,53 +1,89 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { map, Observable, timeout } from 'rxjs';
+import { API_GATEWAY_URL } from '../config/api.config';
+
+export type TipoNotificacion = 'confirmado' | 'cancelado' | 'reprogramado' | 'recordatorio';
 
 export interface Notificacion {
+  id?: number;
   titulo: string;
   descripcion: string;
   tiempo: string;
-  tipo: 'confirmado' | 'cancelado' | 'reprogramado' | 'recordatorio';
+  tipo: TipoNotificacion;
   leida: boolean;
+}
+
+export interface NotificacionRequest {
+  idUsuario: number;
+  titulo: string;
+  mensaje: string;
+  tipo: string;
+}
+
+interface NotificacionApi {
+  id: number;
+  idUsuario: number;
+  titulo: string;
+  mensaje: string;
+  tipo: string;
+  leida: boolean;
+  fechaCreacion: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificacionesService {
-  private notificaciones: Notificacion[] = [
-    {
-      titulo: 'Turno confirmado',
-      descripcion: 'Dr. Andrés Muñoz · Medicina General · 16/01/2026 10:00',
-      tiempo: 'Hace 5 min',
-      tipo: 'confirmado',
-      leida: false
-    },
-    {
-      titulo: 'Recordatorio de turno',
-      descripcion: 'Mañana a las 10:00 con Dra. Laura Soto · Cardiología',
-      tiempo: 'Hace 1 hora',
-      tipo: 'recordatorio',
-      leida: false
-    },
-    {
-      titulo: 'Turno cancelado',
-      descripcion: 'Dr. Felipe Ruiz · Dermatología · 05/10/2025 10:00',
-      tiempo: 'Ayer',
-      tipo: 'cancelado',
-      leida: true
+  private apiUrl = `${API_GATEWAY_URL}/notifications`;
+
+  constructor(private http: HttpClient) {}
+
+  obtenerPorUsuario(idUsuario: number): Observable<Notificacion[]> {
+    return this.http
+      .get<NotificacionApi[]>(`${this.apiUrl}/usuario/${idUsuario}`)
+      .pipe(timeout(8000), map((lista) => lista.map((n) => this.mapFromApi(n))));
+  }
+
+  crear(dto: NotificacionRequest): Observable<Notificacion> {
+    return this.http
+      .post<NotificacionApi>(this.apiUrl, dto)
+      .pipe(timeout(8000), map((n) => this.mapFromApi(n)));
+  }
+
+  marcarComoLeida(id: number): Observable<Notificacion> {
+    return this.http
+      .put<NotificacionApi>(`${this.apiUrl}/${id}/leida`, {})
+      .pipe(timeout(8000), map((n) => this.mapFromApi(n)));
+  }
+
+  private mapFromApi(n: NotificacionApi): Notificacion {
+    return {
+      id: n.id,
+      titulo: n.titulo,
+      descripcion: n.mensaje,
+      tiempo: this.formatearTiempo(n.fechaCreacion),
+      tipo: this.normalizarTipo(n.tipo),
+      leida: n.leida
+    };
+  }
+
+  private normalizarTipo(tipo: string): TipoNotificacion {
+    const t = tipo.toLowerCase();
+    if (t === 'confirmado' || t === 'cancelado' || t === 'reprogramado' || t === 'recordatorio') {
+      return t;
     }
-  ];
-
-  obtenerNotificaciones(): Notificacion[] {
-    return this.notificaciones;
+    return 'recordatorio';
   }
 
-  marcarTodasLeidas(): void {
-    this.notificaciones = this.notificaciones.map(n => ({
-      ...n,
-      leida: true
-    }));
-  }
-
-  agregarNotificacion(notificacion: Notificacion): void {
-    this.notificaciones.unshift(notificacion);
+  private formatearTiempo(fechaCreacion: string): string {
+    const fecha = new Date(fechaCreacion);
+    const diffMs = Date.now() - fecha.getTime();
+    const minutos = Math.floor(diffMs / 60000);
+    if (minutos < 1) return 'Ahora';
+    if (minutos < 60) return `Hace ${minutos} min`;
+    const horas = Math.floor(minutos / 60);
+    if (horas < 24) return `Hace ${horas} h`;
+    return fecha.toLocaleDateString('es-ES');
   }
 }

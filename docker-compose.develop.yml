@@ -130,6 +130,17 @@ services:
     networks:
       - develop-net
 
+  frontend-develop:
+    build:
+      context: ./frontend/gestion-citas-frontend
+    container_name: frontend-develop
+    depends_on:
+      - api-gateway-develop
+    ports:
+      - "4200:80"
+    networks:
+      - develop-net
+
 volumes:
   usersdb_develop_data:
   turnosdb_develop_data:

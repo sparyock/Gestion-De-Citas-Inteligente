@@ -1,26 +1,61 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, timeout } from 'rxjs';
+import { API_GATEWAY_URL } from '../config/api.config';
+
+export type EstadoTurno = 'PENDIENTE' | 'CONFIRMADO' | 'CANCELADO';
+
+export interface Turno {
+  idTurno: number;
+  idUsuario: number;
+  especialidad: string;
+  doctor: string;
+  fechaHora: string;
+  estado: EstadoTurno;
+  fechaCreacion?: string;
+}
+
+export interface TurnoRequest {
+  idUsuario: number;
+  especialidad: string;
+  doctor: string;
+  fechaHora: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class TurnoStoreService {
-
-  private apiUrl = 'http://localhost:8080/turnos';
+  private apiUrl = `${API_GATEWAY_URL}/turnos`;
 
   constructor(private http: HttpClient) {}
 
-  obtenerTurnos(): Observable<any> {
-  return this.http.get(this.apiUrl);
-}
-
-  crearTurno(turno: any): Observable<any> {
-    return this.http.post(this.apiUrl, turno);
+  obtenerTurnos(idUsuario?: number): Observable<Turno[]> {
+    const params = idUsuario != null ? new HttpParams().set('idUsuario', idUsuario) : undefined;
+    return this.http.get<Turno[]>(this.apiUrl, { params }).pipe(timeout(8000));
   }
 
-  cancelarTurno(idTurno:number): Observable<any>{
-    return this.http.put(this.apiUrl + '/cancelar/' + idTurno, {});
+  crearTurno(turno: TurnoRequest): Observable<Turno> {
+    return this.http.post<Turno>(this.apiUrl, turno).pipe(timeout(8000));
   }
 
+  cancelarTurno(idTurno: number): Observable<Turno> {
+    return this.http.put<Turno>(`${this.apiUrl}/cancelar/${idTurno}`, {}).pipe(timeout(8000));
+  }
+
+  obtenerEspecialidades(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/especialidades`).pipe(timeout(8000));
+  }
+
+  obtenerDoctoresPorEspecialidad(especialidad: string): Observable<string[]> {
+    return this.http
+      .get<string[]>(`${this.apiUrl}/doctores/${encodeURIComponent(especialidad)}`)
+      .pipe(timeout(8000));
+  }
+
+  obtenerHorarios(doctor: string): Observable<string[]> {
+    return this.http
+      .get<string[]>(`${this.apiUrl}/horarios/${encodeURIComponent(doctor)}`)
+      .pipe(timeout(8000));
+  }
 }
