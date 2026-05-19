@@ -1,5 +1,5 @@
 server:
-  port: 8280
+  port: ${PORT:8280}
 
 spring:
   application:
@@ -9,32 +9,30 @@ spring:
     gateway:
       routes:
         - id: users-service
-          uri: http://users-service-main:8281
+          uri: ${USERS_SERVICE_URL:http://users-service-main:8281}
           predicates:
             - Path=/users/**
 
         - id: turnos-service
-          uri: http://turnos-service-main:8282
+          uri: ${TURNOS_SERVICE_URL:http://turnos-service-main:8282}
           predicates:
             - Path=/turnos/**
 
         - id: notifications-service
-          uri: http://notifications-service-main:8283
+          uri: ${NOTIFICATIONS_SERVICE_URL:http://notifications-service-main:8283}
           predicates:
             - Path=/notifications/**
 
         - id: audit-service
-          uri: http://audit-service-main:8284
+          uri: ${AUDIT_SERVICE_URL:http://audit-service-main:8284}
           predicates:
             - Path=/audit/**
 
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins:
-              - "http://localhost:4200"
-              - "http://localhost:5173"
-              - "http://localhost:3000"
+            allowedOriginPatterns:
+              - "*"
             allowedMethods:
               - GET
               - POST

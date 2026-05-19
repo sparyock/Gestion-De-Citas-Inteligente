@@ -1,11 +1,11 @@
 server:
-  port: 8283
+  port: ${PORT:8283}
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5455/notificationsdb_main
-    username: postgres
-    password: yeison
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5455/notificationsdb_main}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:yeison}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -17,4 +17,5 @@ spring:
         format_sql: true
 
   liquibase:
+    enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
