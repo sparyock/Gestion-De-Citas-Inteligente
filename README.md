@@ -1,3 +1,9 @@
+## Este es el Repositorio Principal:
+### Enlace Portal web: [ir](https://github.com/sparyock/Gestion-De-Citas-Inteligente-portal)
+### Enlace app: [ir](https://github.com/sparyock/Gestion-De-Citas-Inteligente-app)
+### Enlace api: [ir](https://github.com/sparyock/Gestion-De-Citas-Inteligente-api)
+### Enlace db: [ir](https://github.com/sparyock/Gestion-De-Citas-Inteligente-db)
+
 # 🏥 Gestión de Citas Inteligente
 
 Sistema distribuido para la gestión de citas médicas, desarrollado como proyecto académico para la asignatura **Sistemas Distribuidos** de Ingeniería de Sistemas. El proyecto implementa una arquitectura basada en microservicios, API Gateway, frontend Angular, bases de datos independientes por servicio, contenedorización con Docker y separación de ambientes `develop`, `qa` y `main`.
