@@ -29,10 +29,15 @@ spring:
             - Path=/audit/**
 
       globalcors:
+        add-to-simple-url-handler-mapping: true
         corsConfigurations:
           '[/**]':
-            allowedOriginPatterns:
-              - "*"
+            allowedOrigins:
+              - "https://gestion-de-citas-inteligentee.vercel.app"
+              - "http://localhost:4200"
+              - "http://localhost:4220"
+              - "http://localhost:5173"
+              - "http://localhost:3000"
             allowedMethods:
               - GET
               - POST
@@ -41,3 +46,4 @@ spring:
               - OPTIONS
             allowedHeaders:
               - "*"
+            allowCredentials: false
