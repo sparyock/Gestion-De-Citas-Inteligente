@@ -16,7 +16,7 @@
   <div class="registro-card" *ngFor="let registro of registros">
     <div class="registro-meta">
       <span class="evento">{{ registro.accion }}</span>
-      <span class="fecha">{{ formatDateTime(registro.fechaCreacion) }}</span>
+      <span class="fecha">{{ formatDateOnly(registro.fechaCreacion) }}</span>
     </div>
     <div class="registro-detalle">
       <p><strong>Descripción:</strong> {{ registro.descripcion }}</p>

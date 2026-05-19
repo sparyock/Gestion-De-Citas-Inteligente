@@ -3,18 +3,49 @@ export function formatDateTime(fechaIso?: string): string {
   const d = new Date(fechaIso);
   if (isNaN(d.getTime())) return fechaIso;
 
-  const pad = (n: number) => String(n).padStart(2, '0');
+  const formatter = new Intl.DateTimeFormat('es-CO', {
+    timeZone: 'America/Bogota',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  });
 
-  const day = pad(d.getDate());
-  const month = pad(d.getMonth() + 1);
-  const year = d.getFullYear();
+  const parts = formatter.formatToParts(d);
+  const values = parts.reduce<Record<string, string>>((acc, part) => {
+    if (part.type !== 'literal') {
+      acc[part.type] = part.value;
+    }
+    return acc;
+  }, {});
 
-  let hours = d.getHours();
-  const minutes = pad(d.getMinutes());
-  const isPm = hours >= 12;
-  const hour12 = hours % 12 === 0 ? 12 : hours % 12;
-  const ampm = isPm ? 'p. m.' : 'a. m.';
-  const hourStr = pad(hour12);
+  const day = values['day'] ?? '';
+  const month = values['month'] ?? '';
+  const year = values['year'] ?? '';
+  const hour = values['hour'] ?? '';
+  const minute = values['minute'] ?? '';
+  const dayPeriod = values['dayPeriod'] ?? '';
 
-  return `${day}/${month}/${year} - ${hourStr}:${minutes} ${ampm}`;
+  if (!day || !month || !year || !hour || !minute || !dayPeriod) {
+    return formatter.format(d);
+  }
+
+  const normalizedPeriod = dayPeriod.replace(/\s+/g, ' ').toLowerCase();
+
+  return `${day}/${month}/${year} - ${hour}:${minute} ${normalizedPeriod}`;
+}
+
+export function formatDateOnly(fechaIso?: string): string {
+  if (!fechaIso) return '';
+  const d = new Date(fechaIso);
+  if (isNaN(d.getTime())) return fechaIso;
+
+  return new Intl.DateTimeFormat('es-CO', {
+    timeZone: 'America/Bogota',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  }).format(d);
 }

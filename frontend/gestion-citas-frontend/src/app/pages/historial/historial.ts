@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuditService, AuditLog } from '../../services/audit.service';
-import { formatDateTime } from '../../utils/date.util';
+import { formatDateOnly } from '../../utils/date.util';
 import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
@@ -58,5 +58,5 @@ export class Historial implements OnInit {
     this.cargarHistorial(usuario.id);
   }
 
-  formatDateTime = formatDateTime;
+  formatDateOnly = formatDateOnly;
 }

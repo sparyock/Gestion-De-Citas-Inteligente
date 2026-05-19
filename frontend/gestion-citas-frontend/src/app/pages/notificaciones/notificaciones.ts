@@ -26,6 +26,15 @@ export class Notificaciones implements OnInit {
     private router: Router
   ) {}
 
+  get fechaActual(): string {
+    return new Date().toLocaleDateString('es-ES', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+  }
+
   ngOnInit(): void {
     const usuario = this.usuarioService.obtenerSesion();
     if (!usuario) {

@@ -48,7 +48,7 @@ export class Registro {
       nombre,
       email,
       password,
-      rol: this.rol
+      rol: 'CLIENTE'
     }).subscribe({
       next: (usuario) => {
         this.usuarioService.guardarSesion(usuario);
