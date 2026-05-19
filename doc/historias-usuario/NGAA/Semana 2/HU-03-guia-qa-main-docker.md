@@ -98,31 +98,31 @@ Las capturas se encuentran guardadas en la carpeta `capturashu3`.
 
 Esta evidencia muestra la validacion del archivo `docker-compose.qa.yml` mediante el comando `docker compose config`, comprobando que la configuracion del ambiente QA no presenta errores.
 
-![Validacion docker compose QA](./capturashu3/1.png)
+![Validacion docker compose QA](../capturashu3/1.png)
 
 ### Evidencia 2: Levantamiento del ambiente QA
 
 Esta evidencia muestra la ejecucion del comando para construir y levantar los contenedores del ambiente QA con Docker Compose.
 
-![Ambiente QA levantado](./capturashu3/2.png)
+![Ambiente QA levantado](../capturashu3/2.png)
 
 ### Evidencia 3: Validacion del docker-compose Main
 
 Esta evidencia muestra la validacion del archivo `docker-compose.main.yml`, comprobando que la configuracion del ambiente Main se encuentra correctamente definida.
 
-![Validacion docker compose Main](./capturashu3/3.png)
+![Validacion docker compose Main](../capturashu3/3.png)
 
 ### Evidencia 4: Levantamiento del ambiente Main
 
 Esta evidencia muestra la ejecucion del comando para construir y levantar los contenedores del ambiente Main con Docker Compose.
 
-![Ambiente Main levantado](./capturashu3/4.png)
+![Ambiente Main levantado](../capturashu3/4.png)
 
 ### Evidencia 5: Puertos QA y Main activos
 
 Esta evidencia muestra los contenedores activos y los puertos expuestos de los ambientes QA y Main mediante el comando `docker ps --format`.
 
-![Puertos QA y Main](./capturashu3/5.png)
+![Puertos QA y Main](../capturashu3/5.png)
 
 ## Cierre de evidencias
 

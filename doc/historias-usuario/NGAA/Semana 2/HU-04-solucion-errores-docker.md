@@ -101,31 +101,31 @@ Las capturas se encuentran guardadas en la carpeta `capturashu4`.
 
 Esta evidencia muestra los contenedores activos del proyecto mediante el comando `docker ps`.
 
-![Contenedores activos](./capturashu4/1.png)
+![Contenedores activos](../capturashu4/1.png)
 
 ### Evidencia 2: Contenedores activos y detenidos con docker ps -a
 
 Esta evidencia muestra todos los contenedores existentes, incluyendo los que se encuentran activos y detenidos.
 
-![Contenedores activos y detenidos](./capturashu4/2.png)
+![Contenedores activos y detenidos](../capturashu4/2.png)
 
 ### Evidencia 3: Revision de logs de un contenedor
 
 Esta evidencia muestra la revision de logs de un contenedor del proyecto, lo cual permite identificar errores o validar que el servicio inicio correctamente.
 
-![Logs de contenedor](./capturashu4/3.png)
+![Logs de contenedor](../capturashu4/3.png)
 
 ### Evidencia 4: Revision de puerto ocupado con netstat
 
 Esta evidencia muestra la verificacion de un puerto utilizado por el proyecto mediante el comando `netstat`, permitiendo identificar si un puerto esta ocupado por algun proceso.
 
-![Revision de puerto](./capturashu4/4.png)
+![Revision de puerto](../capturashu4/4.png)
 
 ### Evidencia 5: Reinicio de un servicio especifico
 
 Esta evidencia muestra el reinicio de un servicio especifico usando Docker Compose, sin necesidad de levantar nuevamente todo el ambiente.
 
-![Reinicio de servicio](./capturashu4/5.png)
+![Reinicio de servicio](../capturashu4/5.png)
 
 ## Cierre de evidencias
 

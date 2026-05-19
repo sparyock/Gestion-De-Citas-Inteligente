@@ -91,24 +91,23 @@ Esta historia de usuario aporta documentacion tecnica para que el equipo pueda e
 
 ### 1. Docker Desktop activo
 
-![Docker Desktop activo](./capturashu1/1.png)
-
+![Docker Desktop activo](../capturashu1/1.png)
 ### 2. Versiones de Docker
 
-![Versiones Docker](./capturashu1/2.png)
+![Versiones Docker](../capturashu1/2.png)
 
 ### 3. Validacion del docker-compose develop
 
-![Docker Compose Config](./capturashu1/3.png)
+![Docker Compose Config](../capturashu1/3.png)
 
 ### 4. Ambiente develop levantado
 
-![Ambiente develop levantado](./capturashu1/4.png)
+![Ambiente develop levantado](../capturashu1/4.png)
 
 ### 5. Contenedores activos
 
-![Contenedores activos](./capturashu1/5.png)
+![Contenedores activos](../capturashu1/5.png)
 
 ### 6. Puertos expuestos
 
-![Puertos expuestos](./capturashu1/6.png)
+![Puertos expuestos](../capturashu1/6.png)

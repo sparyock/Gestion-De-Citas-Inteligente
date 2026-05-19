@@ -165,67 +165,67 @@ Las capturas se encuentran guardadas en la carpeta `capturashu2`.
 
 Esta evidencia muestra la prueba del endpoint de usuarios desde el API Gateway.
 
-![Prueba Users](./capturashu2/1.png)
+![Prueba Users](../capturashu2/1.png)
 
 ### Evidencia 2: Prueba Turnos por navegador
 
 Esta evidencia muestra la prueba del endpoint de turnos desde el API Gateway.
 
-![Prueba Turnos](./capturashu2/2.png)
+![Prueba Turnos](../capturashu2/2.png)
 
 ### Evidencia 3: Prueba Notifications por navegador
 
 Esta evidencia muestra la prueba del endpoint de notificaciones desde el API Gateway.
 
-![Prueba Notifications](./capturashu2/3.png)
+![Prueba Notifications](../capturashu2/3.png)
 
 ### Evidencia 4: Creacion de usuario en Postman
 
 Esta evidencia muestra la prueba para crear un usuario desde Postman.
 
-![Crear usuario Postman](./capturashu2/4.png)
+![Crear usuario Postman](../capturashu2/4.png)
 
 ### Evidencia 5: Login de usuario en Postman
 
 Esta evidencia muestra la prueba de inicio de sesion desde Postman.
 
-![Login Postman](./capturashu2/5.png)
+![Login Postman](../capturashu2/5.png)
 
 ### Evidencia 6: Creacion de turno en Postman
 
 Esta evidencia muestra la prueba para crear un turno desde Postman.
 
-![Crear turno Postman](./capturashu2/6.png)
+![Crear turno Postman](../capturashu2/6.png)
 
 ### Evidencia 7: Creacion de notificacion en Postman
 
 Esta evidencia muestra la prueba para crear una notificacion desde Postman.
 
-![Crear notificacion Postman](./capturashu2/7.png)
+![Crear notificacion Postman](../capturashu2/7.png)
 
 ### Evidencia 8: Contenedores activos con docker ps
 
 Esta evidencia muestra los contenedores activos del proyecto mediante el comando `docker ps`.
 
-![Docker ps](./capturashu2/8.png)
+![Docker ps](../capturashu2/8.png)
 
 ### Evidencia 9: Verificacion de Liquibase en Users DB
 
 Esta evidencia muestra la consulta a la tabla `databasechangelog` de la base de datos de usuarios.
 
-![Liquibase Users](./capturashu2/9.png)
+![Liquibase Users](../capturashu2/9.png)
 
 ### Evidencia 10: Verificacion de Liquibase en Turnos DB
 
 Esta evidencia muestra la consulta a la tabla `databasechangelog` de la base de datos de turnos.
 
-![Liquibase Turnos](./capturashu2/10.png)
+![Liquibase Turnos](../capturashu2/10.png)
 
 ### Evidencia 11: Verificacion de Liquibase en Notifications DB
 
 Esta evidencia muestra la consulta a la tabla `databasechangelog` de la base de datos de notificaciones.
 
-![Liquibase Notifications](./capturashu2/11.png)
+![Liquibase Notifications](../capturashu2/11.png)
 
 ## Cierre de evidencias
 
