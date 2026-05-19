@@ -1,7 +1,8 @@
 import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Observable, timeout } from 'rxjs';
+import { map, Observable, timeout } from 'rxjs';
+import { API_GATEWAY_URL } from '../config/api.config';
 
 export type RolUsuario = 'CLIENTE' | 'ADMIN';
 
@@ -36,17 +37,41 @@ export interface LoginRequest {
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiUrl = 'http://localhost:8081/users';
+  private apiUrl = `${API_GATEWAY_URL}/users`;
   private platformId = inject(PLATFORM_ID);
 
   constructor(private http: HttpClient) {}
 
+  private mapUsuarioApi(data: any): Usuario {
+    const rolRaw = (data?.rol ?? data?.role ?? 'CLIENTE').toString().toUpperCase();
+    const rol = rolRaw === 'ADMIN' ? 'ADMIN' : 'CLIENTE';
+
+    return {
+      id: Number(data?.id ?? data?.idUsuario ?? data?.id_usuario ?? data?.ID ?? 0),
+      nombre: data?.nombre ?? data?.name ?? '',
+      email: data?.email ?? data?.correo ?? data?.correoElectronico ?? data?.correo_electronico ?? '',
+      rol,
+      telefono: data?.telefono ?? data?.phone ?? '',
+      fechaNacimiento: data?.fechaNacimiento ?? data?.fecha_nacimiento ?? '',
+      documento: data?.documento ?? data?.documento ?? '',
+      ciudad: data?.ciudad ?? data?.city ?? ''
+    };
+  }
+
+  private mapUsuariosApi(data: any[]): Usuario[] {
+    return (data ?? []).map((item) => this.mapUsuarioApi(item));
+  }
+
   obtenerUsuarios(): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(this.apiUrl).pipe(timeout(8000));
+    return this.http
+      .get<any[]>(this.apiUrl)
+      .pipe(timeout(8000), map((lista) => this.mapUsuariosApi(lista)));
   }
 
   obtenerUsuarioPorId(id: number): Observable<Usuario> {
-    return this.http.get<Usuario>(`${this.apiUrl}/${id}`).pipe(timeout(8000));
+    return this.http
+      .get<any>(`${this.apiUrl}/${id}`)
+      .pipe(timeout(8000), map((usuario) => this.mapUsuarioApi(usuario)));
   }
 
   registrar(usuario: RegistroUsuarioRequest): Observable<Usuario> {
@@ -61,7 +86,9 @@ export class UsuarioService {
       ciudad: usuario.ciudad ?? ''
     };
 
-    return this.http.post<Usuario>(this.apiUrl, body).pipe(timeout(8000));
+    return this.http
+      .post<any>(this.apiUrl, body)
+      .pipe(timeout(8000), map((usuario) => this.mapUsuarioApi(usuario)));
   }
 
   actualizarUsuario(id: number, usuario: RegistroUsuarioRequest): Observable<Usuario> {
@@ -76,7 +103,9 @@ export class UsuarioService {
       ciudad: usuario.ciudad ?? ''
     };
 
-    return this.http.put<Usuario>(`${this.apiUrl}/${id}`, body).pipe(timeout(8000));
+    return this.http
+      .put<any>(`${this.apiUrl}/${id}`, body)
+      .pipe(timeout(8000), map((usuario) => this.mapUsuarioApi(usuario)));
   }
 
   eliminarUsuario(id: number): Observable<void> {
@@ -89,7 +118,9 @@ export class UsuarioService {
       password: data.password.trim()
     };
 
-    return this.http.post<Usuario>(`${this.apiUrl}/login`, body).pipe(timeout(8000));
+    return this.http
+      .post<any>(`${this.apiUrl}/login`, body)
+      .pipe(timeout(8000), map((usuario) => this.mapUsuarioApi(usuario)));
   }
 
   guardarSesion(usuario: Usuario): void {

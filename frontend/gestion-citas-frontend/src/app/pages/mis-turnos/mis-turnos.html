@@ -5,64 +5,64 @@
       <h2>Mis Turnos</h2>
       <p>Historial completo de citas</p>
     </div>
-
-    <button routerLink="/solicitar-turno" class="btn-nuevo">
-      + Nuevo Turno
-    </button>
+      <div class="header-acciones">
+        <button class="btn btn-actualizar" (click)="actualizar()">⟳ Actualizar</button>
+        <button routerLink="/solicitar-turno" class="btn btn-primario">+ Nuevo Turno</button>
+      </div>
   </div>
 
+  <p *ngIf="cargando">Cargando turnos...</p>
+  <p *ngIf="errorMensaje" class="mensaje-error">{{ errorMensaje }}</p>
+  <div *ngIf="operacionMensaje" class="mensaje-exito">{{ operacionMensaje }}</div>
+  <div *ngIf="operacionError" class="mensaje-error">{{ operacionError }}</div>
 
-  <!-- Próximos turnos -->
   <div class="card">
-
     <h3>Próximos turnos</h3>
+    <div *ngIf="!cargando && proximos.length === 0">No tienes turnos próximos por ahora</div>
+    <div *ngFor="let turno of proximos" class="turno">
+      <div class="info">
+        👨‍⚕️ {{ turno.doctor }} <br />
+        {{ formatDateTime(turno.fechaHora) }} · {{ turno.especialidad }}
+      </div>
+      <span class="estado" [ngClass]="claseEstado(turno.estado)">{{ turno.estado }}</span>
 
-    <div *ngIf="proximos.length === 0">
-      No hay turnos próximos
-    </div>
-
-    <div *ngFor="let turno of proximos">
-
-      <div class="turno">
-        <div class="info">
-  👨‍⚕️ {{ turno.doctor }} <br>
-  {{ turno.fechaHora | date:'dd/MM/yyyy, HH:mm':'UTC' }}
-</div>
-
-        <span class="estado pendiente">
-          {{ turno.estado }}
-        </span>
+      <div class="acciones">
+        <button *ngIf="turno.estado === 'PENDIENTE'" class="btn btn-primario" (click)="iniciarReprogramar(turno)">Reprogramar</button>
+        <button *ngIf="turno.estado === 'PENDIENTE'" class="btn btn-peligro" (click)="cancelarTurno(turno)">Cancelar</button>
       </div>
 
-    </div>
+      <div *ngIf="editingId === turno.idTurno" class="reprogram-card card">
+        <h4>Reprogramar turno · {{ turno.doctor }} · {{ turno.especialidad }}</h4>
 
+        <div class="dias">
+          <button class="dia" *ngFor="let d of reprogramDias" [class.selected]="reprogramFechaSeleccionada === d.fecha" (click)="seleccionarFechaReprogram(d.fecha)">{{ d.label }}</button>
+        </div>
+
+        <h5>Horarios disponibles</h5>
+        <div class="horarios">
+          <button class="hora" *ngFor="let h of reprogramHorarios" [class.selected]="reprogramHoraSeleccionada === h" (click)="seleccionarHoraReprogram(h)">{{ h }}</button>
+        </div>
+
+        <div class="acciones-doctor" style="margin-top:12px">
+          <button class="btn btn-actualizar" (click)="cancelarReprogramar()">Cancelar</button>
+          <button class="btn btn-primario" (click)="guardarReprogramacion(turno)">Guardar reprogramación</button>
+        </div>
+
+        <div *ngIf="operacionError" class="mensaje-error">{{ operacionError }}</div>
+      </div>
+    </div>
   </div>
 
-
-  <!-- Historial -->
   <div class="card">
-
     <h3>Historial</h3>
-
-    <div *ngIf="historial.length === 0">
-      No hay historial
-    </div>
-
-    <div *ngFor="let turno of historial">
-
-      <div class="turno">
-        <div class="info">
-  👨‍⚕️ {{ turno.doctor }} <br>
-  {{ turno.fechaHora | date:'dd/MM/yyyy, HH:mm':'UTC' }}
-</div>
-
-        <span class="estado cancelado">
-          {{ turno.estado }}
-        </span>
+    <div *ngIf="!cargando && historial.length === 0">No hay historial</div>
+    <div *ngFor="let turno of historial" class="turno">
+      <div class="info">
+        👨‍⚕️ {{ turno.doctor }} <br>
+        {{ turno.fechaHora | date:'dd/MM/yyyy, HH:mm' }} · {{ turno.especialidad }}
       </div>
-
+      <span class="estado cancelado">{{ turno.estado }}</span>
     </div>
-
   </div>
 
 </div>

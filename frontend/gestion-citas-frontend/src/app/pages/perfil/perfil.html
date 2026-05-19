@@ -1,28 +1,19 @@
 <div class="perfil-container">
   <div class="card perfil-card" *ngIf="usuario">
     <div class="perfil-header">
-      <div class="avatar">
-        {{ obtenerIniciales(usuario.nombre) }}
-      </div>
-
-      <div class="perfil-datos">
-        <h3>{{ usuario.nombre }}</h3>
-        <p>{{ usuario.email }}</p>
-        <span class="estado confirmado">{{ usuario.rol }}</span>
+      <div class="perfil-titulo">
+        <h2>Mi perfil</h2>
+        <p>Información de la cuenta registrada en el sistema.</p>
       </div>
     </div>
 
     <hr />
 
     <div class="perfil-info">
-      <p>📞 <strong>Teléfono:</strong> {{ usuario.telefono || 'Pendiente' }}</p>
-      <p>📅 <strong>Fecha de nacimiento:</strong> {{ usuario.fechaNacimiento || 'Pendiente' }}</p>
-      <p>🪪 <strong>Documento:</strong> {{ usuario.documento || 'Pendiente' }}</p>
-      <p>📍 <strong>Ciudad:</strong> {{ usuario.ciudad || 'Pendiente' }}</p>
+      <p><strong>ID:</strong> {{ usuario.id }}</p>
+      <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
+      <p><strong>Correo:</strong> {{ usuario.email }}</p>
+      <p><strong>Rol:</strong> {{ usuario.rol }}</p>
     </div>
-
-    <button class="btn-editar" (click)="irAEditarPerfil()">
-      ✏️ Editar perfil
-    </button>
   </div>
 </div>

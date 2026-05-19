@@ -21,13 +21,22 @@ public class TurnoService {
     // Crear turno desde DTO
     public Turno crearTurno(TurnoRequestDTO dto) {
 
+        boolean horarioOcupado = turnoRepository.existsByDoctorAndFechaHoraAndEstadoNot(
+                dto.getDoctor(),
+                dto.getFechaHora(),
+                EstadoTurno.CANCELADO
+        );
+
+        if (horarioOcupado) {
+            throw new RuntimeException("Este horario ya está ocupado para el doctor seleccionado.");
+        }
+
         Turno turno = new Turno();
 
         turno.setIdUsuario(dto.getIdUsuario());
         turno.setEspecialidad(dto.getEspecialidad());
         turno.setDoctor(dto.getDoctor());
         turno.setFechaHora(dto.getFechaHora());
-
         turno.setEstado(EstadoTurno.PENDIENTE);
         turno.setFechaCreacion(LocalDateTime.now());
 
@@ -41,19 +50,35 @@ public class TurnoService {
 
     // Ver turno por ID
     public Turno obtenerTurnoPorId(Long id) {
-    return turnoRepository.findById(id).orElse(null);
-}
+        return turnoRepository.findById(id).orElse(null);
+    }
 
     // Ver turnos por usuario
     public List<Turno> obtenerTurnosUsuario(Long idUsuario) {
         return turnoRepository.findByIdUsuario(idUsuario);
     }
 
-    // ACTUALIZAR turno
+    // Actualizar turno
     public Turno actualizarTurno(Long idTurno, TurnoRequestDTO dto) {
 
         Turno turno = turnoRepository.findById(idTurno)
                 .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
+
+        boolean cambioDoctorOFecha =
+                !turno.getDoctor().equals(dto.getDoctor())
+                        || !turno.getFechaHora().equals(dto.getFechaHora());
+
+        if (cambioDoctorOFecha) {
+            boolean horarioOcupado = turnoRepository.existsByDoctorAndFechaHoraAndEstadoNot(
+                    dto.getDoctor(),
+                    dto.getFechaHora(),
+                    EstadoTurno.CANCELADO
+            );
+
+            if (horarioOcupado) {
+                throw new RuntimeException("Este horario ya está ocupado para el doctor seleccionado.");
+            }
+        }
 
         turno.setIdUsuario(dto.getIdUsuario());
         turno.setEspecialidad(dto.getEspecialidad());
@@ -74,7 +99,7 @@ public class TurnoService {
         return turnoRepository.save(turno);
     }
 
-    // ELIMINAR turno
+    // Eliminar turno
     public void eliminarTurno(Long idTurno) {
 
         Turno turno = turnoRepository.findById(idTurno)
@@ -98,46 +123,114 @@ public class TurnoService {
     // Todos los doctores disponibles
     public List<String> obtenerDoctores() {
         return List.of(
-                "Dr. Andrés Muñoz",
+                "Dr. Andres Muñoz",
                 "Dra. Laura Soto",
                 "Dr. Felipe Ruiz",
-                "Dra. Camila Torres"
+                "Dra. Camila Torres",
+                "Dr. Ricardo Salazar",
+                "Dra. Valentina Castro"
         );
     }
 
     // Doctores por especialidad
     public List<String> obtenerDoctoresPorEspecialidad(String especialidad) {
 
-        switch (especialidad.toLowerCase()) {
-
-            case "medicina general":
-                return List.of("Dr. Andrés Muñoz", "Dra. Laura Soto");
-
-            case "cardiologia":
-                return List.of("Dr. Felipe Ruiz", "Dra. Laura Soto");
-
-            case "dermatologia":
-                return List.of("Dr. Felipe Ruiz");
-
-            case "pediatria":
-                return List.of("Dra. Camila Torres");
-
-            default:
-                return List.of();
+        if (especialidad == null || especialidad.isBlank()) {
+            return List.of();
         }
+
+        return switch (especialidad.toLowerCase()) {
+
+            case "medicina general" -> List.of(
+                    "Dr. Andres Muñoz",
+                    "Dra. Laura Soto"
+            );
+
+            case "cardiologia" -> List.of(
+                    "Dr. Felipe Ruiz",
+                    "Dra. Laura Soto"
+            );
+
+            case "dermatologia" -> List.of(
+                    "Dr. Felipe Ruiz"
+            );
+
+            case "pediatria" -> List.of(
+                    "Dra. Camila Torres"
+            );
+
+            case "traumatologia" -> List.of(
+                    "Dr. Ricardo Salazar"
+            );
+
+            case "oftalmologia" -> List.of(
+                    "Dra. Valentina Castro"
+            );
+
+            default -> List.of();
+        };
     }
 
-    // Horarios disponibles
+    // Horarios disponibles por doctor
     public List<String> obtenerHorariosDisponibles(String doctor) {
 
-        return List.of(
-                "08:00",
-                "09:00",
-                "10:00",
-                "11:00",
-                "14:00",
-                "15:00",
-                "16:00"
-        );
+        if (doctor == null || doctor.isBlank()) {
+            return List.of();
+        }
+
+        return switch (doctor.toLowerCase()) {
+
+            case "dr. andres muñoz" -> List.of(
+                    "08:00",
+                    "09:00",
+                    "10:00",
+                    "14:00"
+            );
+
+            case "dra. laura soto" -> List.of(
+                    "09:00",
+                    "10:00",
+                    "11:00",
+                    "15:00"
+            );
+
+            case "dr. felipe ruiz" -> List.of(
+                    "08:00",
+                    "11:00",
+                    "14:00",
+                    "16:00"
+            );
+
+            case "dra. camila torres" -> List.of(
+                    "10:00",
+                    "11:00",
+                    "15:00",
+                    "16:00"
+            );
+
+            case "dr. ricardo salazar" -> List.of(
+                    "08:00",
+                    "09:00",
+                    "14:00",
+                    "15:00"
+            );
+
+            case "dra. valentina castro" -> List.of(
+                    "09:00",
+                    "10:00",
+                    "15:00",
+                    "16:00"
+            );
+
+            default -> List.of(
+                    "08:00",
+                    "09:00",
+                    "10:00",
+                    "11:00",
+                    "14:00",
+                    "15:00",
+                    "16:00"
+            );
+        };
     }
 }

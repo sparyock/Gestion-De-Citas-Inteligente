@@ -201,3 +201,17 @@ color:#92400e;
 background:#fee2e2;
 color:#991b1b;
 }
+
+.acciones{display:flex;gap:8px;align-items:center}
+
+/* Small adjustments to use global .btn classes */
+.btn-nuevo{padding:8px 12px}
+
+.reprogram-card{margin-top:12px;border:1px solid #e5e7eb;padding:12px;border-radius:10px;background:#fff}
+.reprogram-card h4{margin:0 0 8px 0}
+.dias{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.dia{padding:8px 10px;border-radius:8px;border:1px solid #e5e7eb;background:#f9fafb;cursor:pointer}
+.dia.selected{background:#dbeafe;border-color:#93c5fd;color:#1e40af}
+.horarios{display:flex;gap:8px;flex-wrap:wrap}
+.hora{padding:8px 10px;border-radius:8px;border:1px solid #e5e7eb;background:#fff;cursor:pointer}
+.hora.selected{background:#2563eb;color:white;border-color:#1e40af}

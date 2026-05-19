@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_DB: usersdb_qa
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: yeison 
+      POSTGRES_PASSWORD: yeison
     ports:
       - "5443:5432"
     volumes:
@@ -56,6 +56,21 @@ services:
       timeout: 5s
       retries: 10
 
+  audit-db-qa:
+    image: mongo:7
+    container_name: audit-db-qa
+    ports:
+      - "27018:27017"
+    volumes:
+      - auditdb_qa_data:/data/db
+    networks:
+      - qa-net
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval \"db.runCommand({ ping: 1 }).ok\""]
+      interval: 10s
+      timeout: 10s
+      retries: 15
+
   users-service-qa:
     build:
       context: ./backend/users-service
@@ -66,6 +81,9 @@ services:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: qa
+      SPRING_DATASOURCE_URL: jdbc:postgresql://users-db-qa:5432/usersdb_qa
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: yeison
     ports:
       - "8181:8181"
     networks:
@@ -82,6 +100,9 @@ services:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: qa
+      SPRING_DATASOURCE_URL: jdbc:postgresql://turnos-db-qa:5432/turnosdb_qa
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: yeison
     ports:
       - "8182:8182"
     networks:
@@ -107,6 +128,23 @@ services:
       - qa-net
     restart: unless-stopped
 
+  audit-service-qa:
+    build:
+      context: ./backend/audit-service
+      dockerfile: Dockerfile
+    container_name: audit-service-qa
+    depends_on:
+      audit-db-qa:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: qa
+      SPRING_DATA_MONGODB_URI: mongodb://audit-db-qa:27017/auditdb_qa
+    ports:
+      - "8184:8184"
+    networks:
+      - qa-net
+    restart: unless-stopped
+
   api-gateway-qa:
     build:
       context: ./backend/api-gateway
@@ -116,6 +154,7 @@ services:
       - users-service-qa
       - turnos-service-qa
       - notifications-service-qa
+      - audit-service-qa
     environment:
       SPRING_PROFILES_ACTIVE: qa
     ports:
@@ -124,10 +163,26 @@ services:
       - qa-net
     restart: unless-stopped
 
+  frontend-qa:
+    build:
+      context: ./frontend/gestion-citas-frontend
+      dockerfile: Dockerfile
+      args:
+        API_GATEWAY_URL: http://localhost:8180
+    container_name: frontend-qa
+    depends_on:
+      - api-gateway-qa
+    ports:
+      - "4210:80"
+    networks:
+      - qa-net
+    restart: unless-stopped
+
 volumes:
   usersdb_qa_data:
   turnosdb_qa_data:
   notificationsdb_qa_data:
+  auditdb_qa_data:
 
 networks:
   qa-net:

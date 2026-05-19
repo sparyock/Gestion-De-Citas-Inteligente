@@ -7,6 +7,7 @@ import { MisTurnos } from './pages/mis-turnos/mis-turnos';
 import { SolicitarTurno } from './pages/solicitar-turno/solicitar-turno';
 import { Perfil } from './pages/perfil/perfil';
 import { Notificaciones } from './pages/notificaciones/notificaciones';
+import { Historial } from './pages/historial/historial';
 import { EditarPerfil } from './pages/editar-perfil/editar-perfil';
 
 export const routes: Routes = [
@@ -21,6 +22,7 @@ export const routes: Routes = [
   { path: 'perfil', component: Perfil },
   { path: 'editar-perfil', component: EditarPerfil },
   { path: 'notificaciones', component: Notificaciones },
+  { path: 'historial', component: Historial },
 
   { path: '**', redirectTo: 'login' }
 ];

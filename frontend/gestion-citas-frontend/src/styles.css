@@ -69,3 +69,29 @@ box-shadow:0 10px 20px rgba(0,0,0,0.08);
 border-color:#2563eb;
 background:#dbeafe;
 }
+
+/* Botones profesionales */
+.btn{
+	display:inline-flex;
+	align-items:center;
+	gap:8px;
+	padding:8px 12px;
+	border-radius:8px;
+	border:1px solid transparent;
+	font-weight:600;
+	cursor:pointer;
+	transition:all .15s ease;
+}
+.btn:active{transform:translateY(1px)}
+.btn-primario{background:#2563eb;color:white;border-color:#1e40af}
+.btn-actualizar{background:#f3f4f6;color:#374151;border-color:#d1d5db}
+.btn-peligro{background:#dc2626;color:white;border-color:#b91c1c}
+.btn-exito{background:#16a34a;color:white;border-color:#15803d}
+.btn-warning{background:#f59e0b;color:#92400e;border-color:#d97706}
+.btn-ghost{background:transparent;color:#374151;border-color:transparent}
+
+/* Pequeños estilos para formularios inline */
+.inline-form{display:flex;gap:8px;align-items:center}
+.inline-form input[type="date"], .inline-form input[type="time"]{padding:6px;border-radius:6px;border:1px solid #e5e7eb}
+.mensaje-exito{color:#065f46;background:#ecfdf5;padding:8px;border-radius:8px;margin-top:8px}
+.mensaje-error{color:#7f1d1d;background:#fff1f2;padding:8px;border-radius:8px;margin-top:8px}

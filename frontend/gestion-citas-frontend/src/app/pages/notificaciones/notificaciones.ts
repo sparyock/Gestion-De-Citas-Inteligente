@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NotificacionesService, Notificacion } from '../../services/notificaciones';
+import { Router } from '@angular/router';
+import { Notificacion, NotificacionesService } from '../../services/notificaciones';
+import { UsuarioService } from '../../services/usuario.service';
+import { AuditService } from '../../services/audit.service';
 
 type FiltroNotificacion = 'Todas' | 'Sin leer' | 'Confirmados' | 'Cancelados';
 
@@ -8,96 +11,181 @@ type FiltroNotificacion = 'Todas' | 'Sin leer' | 'Confirmados' | 'Cancelados';
   selector: 'app-notificaciones',
   imports: [CommonModule],
   templateUrl: './notificaciones.html',
-  styleUrl: './notificaciones.css',
+  styleUrl: './notificaciones.css'
 })
-export class Notificaciones {
+export class Notificaciones implements OnInit {
   filtroActivo: FiltroNotificacion = 'Todas';
+  lista: Notificacion[] = [];
+  cargando = false;
+  usuarioNombre = 'Usuario';
 
-  constructor(private notificacionesService: NotificacionesService) {}
+  constructor(
+    private notificacionesService: NotificacionesService,
+    private usuarioService: UsuarioService,
+    private auditService: AuditService,
+    private router: Router
+  ) {}
 
-  get notificaciones(): Notificacion[] {
-    return this.notificacionesService.obtenerNotificaciones();
+  get fechaActual(): string {
+    return new Date().toLocaleDateString('es-ES', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+  }
+
+  ngOnInit(): void {
+    const usuario = this.usuarioService.obtenerSesion();
+    if (!usuario) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    this.usuarioNombre = usuario.nombre;
+    this.cargarNotificaciones(usuario.id);
+  }
+
+  cargaError = '';
+
+  cargarNotificaciones(idUsuario: number): void {
+    this.cargando = true;
+    this.cargaError = '';
+    this.notificacionesService.obtenerPorUsuario(idUsuario).subscribe({
+      next: (data) => {
+        this.lista = data;
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('Error cargando notificaciones:', err);
+        this.lista = [];
+        this.cargando = false;
+        this.cargaError = 'No se pudieron cargar las notificaciones. Intenta nuevamente.';
+      }
+    });
   }
 
   get total(): number {
-    return this.notificaciones.length;
+    return this.lista.length;
   }
 
   get sinLeer(): number {
-    return this.notificaciones.filter(n => !n.leida).length;
+    return this.lista.filter((n) => !n.leida).length;
   }
 
   get confirmados(): number {
-    return this.notificaciones.filter(n => n.tipo === 'confirmado').length;
+    return this.lista.filter((n) => n.tipo === 'confirmado').length;
   }
 
   get cancelados(): number {
-    return this.notificaciones.filter(n => n.tipo === 'cancelado').length;
+    return this.lista.filter((n) => n.tipo === 'cancelado').length;
   }
 
   get notificacionesFiltradas(): Notificacion[] {
     if (this.filtroActivo === 'Confirmados') {
-      return this.notificaciones.filter(n => n.tipo === 'confirmado');
+      return this.lista.filter((n) => n.tipo === 'confirmado');
     }
-
     if (this.filtroActivo === 'Cancelados') {
-      return this.notificaciones.filter(n => n.tipo === 'cancelado');
+      return this.lista.filter((n) => n.tipo === 'cancelado');
     }
-
     if (this.filtroActivo === 'Sin leer') {
-      return this.notificaciones.filter(n => !n.leida);
+      return this.lista.filter((n) => !n.leida);
     }
-
-    return this.notificaciones;
+    return this.lista;
   }
 
-  cambiarFiltro(filtro: FiltroNotificacion) {
+  cambiarFiltro(filtro: FiltroNotificacion): void {
     this.filtroActivo = filtro;
   }
 
-  marcarTodasLeidas() {
-    this.notificacionesService.marcarTodasLeidas();
-    alert('Todas las notificaciones fueron marcadas como leídas');
+  actualizar(): void {
+    const usuario = this.usuarioService.obtenerSesion();
+    if (!usuario) return;
+    this.cargarNotificaciones(usuario.id);
   }
 
-  simularEvento(tipo: 'confirmado' | 'cancelado' | 'reprogramado' | 'recordatorio') {
-    let nuevaNotificacion: Notificacion;
+  marcarComoLeida(notificacion: Notificacion): void {
+    if (!notificacion.id) return;
+    this.notificacionesService.marcarComoLeida(notificacion.id).subscribe({
+      next: (actualizada) => {
+        const idx = this.lista.findIndex((x) => x.id === actualizada.id);
+        if (idx >= 0) this.lista[idx] = actualizada;
+      },
+      error: (err) => console.error('Error marcando notificación como leída:', err)
+    });
+  }
 
-    if (tipo === 'confirmado') {
-      nuevaNotificacion = {
+  eliminarNotificacion(notificacion: Notificacion): void {
+    if (!notificacion.id) return;
+    this.notificacionesService.eliminar(notificacion.id).subscribe({
+      next: () => {
+        this.lista = this.lista.filter((n) => n.id !== notificacion.id);
+      },
+      error: (err) => console.error('Error eliminando notificación:', err)
+    });
+  }
+
+  marcarTodasLeidas(): void {
+    const usuario = this.usuarioService.obtenerSesion();
+    if (!usuario) return;
+
+    const sinLeer = this.lista.filter((n) => !n.leida && n.id != null);
+    if (sinLeer.length === 0) return;
+
+    sinLeer.forEach((n) => {
+      this.notificacionesService.marcarComoLeida(n.id!).subscribe({
+        next: (actualizada) => {
+          const idx = this.lista.findIndex((x) => x.id === actualizada.id);
+          if (idx >= 0) this.lista[idx] = actualizada;
+        },
+        error: (err) => console.error('Error marcando notificación como leída:', err)
+      });
+    });
+  }
+
+  crearEvento(tipo: 'confirmado' | 'cancelado' | 'reprogramado' | 'recordatorio'): void {
+    const usuario = this.usuarioService.obtenerSesion();
+    if (!usuario) return;
+
+    const payloads: Record<string, { titulo: string; mensaje: string }> = {
+      confirmado: {
         titulo: 'Turno confirmado',
-        descripcion: 'Dr. Juan Pérez · Medicina General · 25/03/2026 09:00',
-        tiempo: 'Ahora',
-        tipo: 'confirmado',
-        leida: false
-      };
-    } else if (tipo === 'cancelado') {
-      nuevaNotificacion = {
+        mensaje: 'Tu cita fue registrada correctamente'
+      },
+      cancelado: {
         titulo: 'Turno cancelado',
-        descripcion: 'Dra. María López · Dermatología · 26/03/2026 11:00',
-        tiempo: 'Ahora',
-        tipo: 'cancelado',
-        leida: false
-      };
-    } else if (tipo === 'reprogramado') {
-      nuevaNotificacion = {
+        mensaje: 'Tu cita fue cancelada'
+      },
+      reprogramado: {
         titulo: 'Turno reprogramado',
-        descripcion: 'Tu cita fue movida para el 27/03/2026 a las 03:00 PM',
-        tiempo: 'Ahora',
-        tipo: 'reprogramado',
-        leida: false
-      };
-    } else {
-      nuevaNotificacion = {
+        mensaje: 'Tu cita fue reprogramada'
+      },
+      recordatorio: {
         titulo: 'Recordatorio de turno',
-        descripcion: 'Tienes una cita mañana con Dra. Laura Soto · Cardiología',
-        tiempo: 'Ahora',
-        tipo: 'recordatorio',
-        leida: false
-      };
-    }
+        mensaje: 'Tienes una cita próxima'
+      }
+    };
 
-    this.notificacionesService.agregarNotificacion(nuevaNotificacion);
-    alert('Evento simulado correctamente en el frontend');
+    const payload = payloads[tipo];
+    this.notificacionesService
+      .crear({
+        idUsuario: usuario.id,
+        titulo: payload.titulo,
+        mensaje: payload.mensaje,
+        tipo
+      })
+      .subscribe({
+        next: (n) => {
+          this.lista = [n, ...this.lista];
+          this.auditService
+            .registrar({
+              idUsuario: usuario.id,
+              accion: 'CREAR_NOTIFICACION',
+              descripcion: payload.titulo,
+              servicioOrigen: 'frontend',
+              recurso: 'notifications'
+            })
+            .subscribe();
+        }
+      });
   }
 }

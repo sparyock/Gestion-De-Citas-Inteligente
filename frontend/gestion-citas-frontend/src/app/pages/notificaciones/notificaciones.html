@@ -1,11 +1,11 @@
 <div class="notificaciones-contenedor">
   <h1>Notificaciones</h1>
-  <p class="fecha">martes, 24 de marzo de 2026</p>
+  <p class="fecha">{{ fechaActual }}</p>
 
   <div class="banner">
     <div>
       <p class="saludo">Hola de nuevo,</p>
-      <h2>Carlos Rojas 👋</h2>
+      <h2>{{ usuarioNombre }} 👋</h2>
       <p class="mensaje">Estás al día con todas tus notificaciones.</p>
     </div>
     <div class="icono-banner">🔔</div>
@@ -39,7 +39,10 @@
 
   <div class="centro-notificaciones">
     <div class="centro-header">
-      <h3>Centro de notificaciones</h3>
+      <div>
+        <h3>Centro de notificaciones</h3>
+        <button class="btn btn-actualizar" (click)="actualizar()">⟳ Actualizar</button>
+      </div>
 
       <div class="filtros">
         <button
@@ -74,15 +77,13 @@
           Cancelados
         </button>
 
-        <button class="marcar-leidas" (click)="marcarTodasLeidas()">
-          Marcar todas leídas
-        </button>
+        <button class="btn btn-actualizar" (click)="marcarTodasLeidas()">Marcar todas leídas</button>
       </div>
     </div>
     
 <div class="estado-vacio" *ngIf="notificacionesFiltradas.length === 0">
   <div class="estado-vacio-icono">🔔</div>
-  <h4>No tienes notificaciones en esta categoría</h4>
+  <h4>{{ filtroActivo === 'Todas' ? 'No tienes notificaciones' : 'No tienes notificaciones en esta categoría' }}</h4>
   <p>Todo está al día por ahora.</p>
 </div>
 
@@ -131,18 +132,23 @@
             }}
           </span>
         </div>
+
+        <div class="acciones-notificacion">
+          <button class="btn btn-primario" *ngIf="!n.leida" (click)="marcarComoLeida(n)">Marcar como leída</button>
+          <button class="btn btn-peligro" (click)="eliminarNotificacion(n)">Eliminar</button>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="simulador-eventos">
-    <h4>SIMULAR EVENTO DEL MICROSERVICIO → POST /api/notificaciones/evento</h4>
+    <h4>Crear notificación (POST /notifications vía gateway)</h4>
 
     <div class="botones-simulador">
-      <button class="btn btn-exito" (click)="simularEvento('confirmado')">Turno confirmado</button>
-      <button class="btn btn-peligro" (click)="simularEvento('cancelado')">Turno cancelado</button>
-      <button class="btn btn-warning" (click)="simularEvento('reprogramado')">Turno reprogramado</button>
-      <button class="btn btn-primario" (click)="simularEvento('recordatorio')">Recordatorio de turno</button>
+      <button class="btn btn-exito" (click)="crearEvento('confirmado')">Turno confirmado</button>
+      <button class="btn btn-peligro" (click)="crearEvento('cancelado')">Turno cancelado</button>
+      <button class="btn btn-warning" (click)="crearEvento('reprogramado')">Turno reprogramado</button>
+      <button class="btn btn-primario" (click)="crearEvento('recordatorio')">Recordatorio de turno</button>
     </div>
   </div>
 </div>

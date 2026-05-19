@@ -7,6 +7,9 @@ spring:
 
   cloud:
     gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+
       routes:
         - id: users-service
           uri: http://users-service-develop:8081
@@ -23,16 +26,7 @@ spring:
           predicates:
             - Path=/notifications/**
 
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOrigins:
-              - "http://localhost:4200"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-            allowedHeaders:
-              - "*"
+        - id: audit-service
+          uri: http://audit-service-develop:8084
+          predicates:
+            - Path=/audit/**

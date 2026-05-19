@@ -1,0 +1,28 @@
+<div class="historial-container">
+  <div class="historial-header">
+    <div>
+      <h2>Historial de Auditoría</h2>
+      <p>Registros de acciones del usuario</p>
+    </div>
+    <button class="btn-actualizar" (click)="actualizar()">⟳ Actualizar</button>
+  </div>
+
+  <div class="estado-general" *ngIf="error">{{ error }}</div>
+  <div class="estado-general" *ngIf="!cargando && registros.length === 0 && !error">
+    <h3>No hay registros de auditoría</h3>
+    <p>Aún no hay acciones registradas para tu usuario.</p>
+  </div>
+
+  <div class="registro-card" *ngFor="let registro of registros">
+    <div class="registro-meta">
+      <span class="evento">{{ registro.accion }}</span>
+      <span class="fecha">{{ formatDateOnly(registro.fechaCreacion) }}</span>
+    </div>
+    <div class="registro-detalle">
+      <p><strong>Descripción:</strong> {{ registro.descripcion }}</p>
+      <p><strong>Origen:</strong> {{ registro.servicioOrigen }}</p>
+      <p><strong>Recurso:</strong> {{ registro.recurso || 'N/A' }}</p>
+      <p *ngIf="registro.idRecurso"><strong>ID recurso:</strong> {{ registro.idRecurso }}</p>
+    </div>
+  </div>
+</div>
