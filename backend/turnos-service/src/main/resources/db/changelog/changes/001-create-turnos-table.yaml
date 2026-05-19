@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-turnos-table
+      author: nicolas
+      changes:
+        - createTable:
+            tableName: turnos
+            columns:
+              - column:
+                  name: id_turno
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_turnos
+                    nullable: false
+
+              - column:
+                  name: id_usuario
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: especialidad
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: doctor
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: fecha_hora
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: estado
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: fecha_creacion
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false

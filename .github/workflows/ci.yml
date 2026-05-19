@@ -1,0 +1,92 @@
+name: CI - Gestion de Citas Inteligente
+
+on:
+  push:
+    branches:
+      - develop
+      - qa
+      - main
+
+  pull_request:
+    branches:
+      - develop
+      - qa
+      - main
+
+jobs:
+  backend-build:
+    name: Build backend microservices
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - backend/api-gateway
+          - backend/users-service
+          - backend/turnos-service
+          - backend/notifications-service
+          - backend/audit-service
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Build ${{ matrix.service }}
+        working-directory: ${{ matrix.service }}
+        run: mvn -B clean package -DskipTests
+
+  frontend-build:
+    name: Build Angular frontend
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend/gestion-citas-frontend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/gestion-citas-frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Angular project
+        run: npm run build
+
+  docker-compose-check:
+    name: Validate Docker Compose files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show Docker version
+        run: docker --version
+
+      - name: Show Docker Compose version
+        run: docker compose version
+
+      - name: Validate develop compose
+        run: docker compose -f docker-compose.develop.yml config
+
+      - name: Validate qa compose
+        run: docker compose -f docker-compose.qa.yml config
+
+      - name: Validate main compose
+        run: docker compose -f docker-compose.main.yml config

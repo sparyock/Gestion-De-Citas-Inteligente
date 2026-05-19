@@ -1,0 +1,188 @@
+services:
+  users-db-main:
+    image: postgres:16
+    container_name: users-db-main
+    environment:
+      POSTGRES_DB: usersdb_main
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yeison
+    ports:
+      - "5453:5432"
+    volumes:
+      - usersdb_main_data:/var/lib/postgresql/data
+    networks:
+      - main-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d usersdb_main"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  turnos-db-main:
+    image: postgres:16
+    container_name: turnos-db-main
+    environment:
+      POSTGRES_DB: turnosdb_main
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yeison
+    ports:
+      - "5454:5432"
+    volumes:
+      - turnosdb_main_data:/var/lib/postgresql/data
+    networks:
+      - main-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d turnosdb_main"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  notifications-db-main:
+    image: postgres:16
+    container_name: notifications-db-main
+    environment:
+      POSTGRES_DB: notificationsdb_main
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yeison
+    ports:
+      - "5455:5432"
+    volumes:
+      - notificationsdb_main_data:/var/lib/postgresql/data
+    networks:
+      - main-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d notificationsdb_main"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  audit-db-main:
+    image: mongo:7
+    container_name: audit-db-main
+    ports:
+      - "27019:27017"
+    volumes:
+      - auditdb_main_data:/data/db
+    networks:
+      - main-net
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval \"db.runCommand({ ping: 1 }).ok\""]
+      interval: 10s
+      timeout: 10s
+      retries: 15
+
+  users-service-main:
+    build:
+      context: ./backend/users-service
+      dockerfile: Dockerfile
+    container_name: users-service-main
+    depends_on:
+      users-db-main:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: main
+      SPRING_DATASOURCE_URL: jdbc:postgresql://users-db-main:5432/usersdb_main
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: yeison
+    ports:
+      - "8281:8281"
+    networks:
+      - main-net
+    restart: unless-stopped
+
+  turnos-service-main:
+    build:
+      context: ./backend/turnos-service
+      dockerfile: Dockerfile
+    container_name: turnos-service-main
+    depends_on:
+      turnos-db-main:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: main
+      SPRING_DATASOURCE_URL: jdbc:postgresql://turnos-db-main:5432/turnosdb_main
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: yeison
+    ports:
+      - "8282:8282"
+    networks:
+      - main-net
+    restart: unless-stopped
+
+  notifications-service-main:
+    build:
+      context: ./backend/notifications-service
+      dockerfile: Dockerfile
+    container_name: notifications-service-main
+    depends_on:
+      notifications-db-main:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: main
+      SPRING_DATASOURCE_URL: jdbc:postgresql://notifications-db-main:5432/notificationsdb_main
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: yeison
+    ports:
+      - "8283:8283"
+    networks:
+      - main-net
+    restart: unless-stopped
+
+  audit-service-main:
+    build:
+      context: ./backend/audit-service
+      dockerfile: Dockerfile
+    container_name: audit-service-main
+    depends_on:
+      audit-db-main:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: main
+      SPRING_DATA_MONGODB_URI: mongodb://audit-db-main:27017/auditdb_main
+    ports:
+      - "8284:8284"
+    networks:
+      - main-net
+    restart: unless-stopped
+
+  api-gateway-main:
+    build:
+      context: ./backend/api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway-main
+    depends_on:
+      - users-service-main
+      - turnos-service-main
+      - notifications-service-main
+      - audit-service-main
+    environment:
+      SPRING_PROFILES_ACTIVE: main
+    ports:
+      - "8280:8280"
+    networks:
+      - main-net
+    restart: unless-stopped
+
+  frontend-main:
+    build:
+      context: ./frontend/gestion-citas-frontend
+      dockerfile: Dockerfile
+      args:
+        API_GATEWAY_URL: http://localhost:8280
+    container_name: frontend-main
+    depends_on:
+      - api-gateway-main
+    ports:
+      - "4220:80"
+    networks:
+      - main-net
+    restart: unless-stopped
+
+volumes:
+  usersdb_main_data:
+  turnosdb_main_data:
+  notificationsdb_main_data:
+  auditdb_main_data:
+
+networks:
+  main-net:

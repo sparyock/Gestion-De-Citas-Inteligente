@@ -1,0 +1,58 @@
+.historial-container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.historial-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.btn-actualizar {
+  background: #2962ff;
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.estado-general {
+  margin: 12px 0;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #f7f7f7;
+}
+
+.registro-card{
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+}
+
+.registro-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.evento {
+  font-weight: bold;
+}
+
+.fecha {
+  color: #555;
+}
+
+.registro-detalle p {
+  margin: 6px 0;
+  color: #374151;
+}

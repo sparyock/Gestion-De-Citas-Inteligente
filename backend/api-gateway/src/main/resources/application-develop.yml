@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway-develop
+
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+
+      routes:
+        - id: users-service
+          uri: http://users-service-develop:8081
+          predicates:
+            - Path=/users/**
+
+        - id: turnos-service
+          uri: http://turnos-service-develop:8082
+          predicates:
+            - Path=/turnos/**
+
+        - id: notifications-service
+          uri: http://notifications-service-develop:8083
+          predicates:
+            - Path=/notifications/**
+
+        - id: audit-service
+          uri: http://audit-service-develop:8084
+          predicates:
+            - Path=/audit/**

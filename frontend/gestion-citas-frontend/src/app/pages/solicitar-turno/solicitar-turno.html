@@ -1,0 +1,244 @@
+<h2>Solicitar Turno</h2>
+<p class="subtitulo">Agenda tu cita en pocos pasos</p>
+
+<!-- STEPPER -->
+
+<div class="stepper">
+
+<div class="step" [class.active]="paso === 1">
+<div class="circle">1</div>
+<span>Especialidad</span>
+</div>
+
+<div class="line"></div>
+
+<div class="step" [class.active]="paso === 2">
+<div class="circle">2</div>
+<span>Doctor</span>
+</div>
+
+<div class="line"></div>
+
+<div class="step" [class.active]="paso === 3">
+<div class="circle">3</div>
+<span>Fecha y Hora</span>
+</div>
+
+<div class="line"></div>
+
+<div class="step" [class.active]="paso === 4">
+<div class="circle">4</div>
+<span>Confirmar</span>
+</div>
+
+</div>
+
+<!-- PASO 1 -->
+
+<div *ngIf="paso === 1">
+
+<h3>Selecciona una especialidad</h3>
+
+
+
+<div class="especialidades">
+
+  <div
+    class="card"
+    *ngFor="let esp of especialidades"
+    [class.selected]="especialidadSeleccionada === esp"
+    (click)="seleccionarEspecialidad(esp)"
+  >
+    <h3>{{ iconoEspecialidad(esp) }} {{ esp }}</h3>
+    <p>Seleccionar especialidad</p>
+  </div>
+
+</div>
+<br>
+
+<div class="acciones">
+<button class="btn" (click)="siguiente()">Siguiente →</button>
+</div>
+
+</div>
+
+<!-- PASO 2 -->
+
+<div *ngIf="paso === 2">
+
+<h3>Elige tu médico</h3>
+
+<div class="lista-doctores">
+
+<div
+*ngFor="let doc of doctoresLista"
+class="doctor-card"
+[class.selected]="doctorSeleccionado === doc"
+(click)="seleccionarDoctor(doc)">
+
+<div class="doctor-info">
+
+<div class="avatar">👨‍⚕️</div>
+
+<div class="doctor-texto">
+<h4>{{ doc }}</h4>
+<p>{{ especialidadSeleccionada }}</p>
+</div>
+
+</div>
+
+
+
+</div>
+
+</div>
+
+<br>
+
+<div class="acciones-doctor">
+
+<button class="btn-volver" (click)="volver()">
+← Volver
+</button>
+
+<button class="btn" (click)="siguiente()" *ngIf="doctorSeleccionado">
+Siguiente →
+</button>
+
+</div>
+
+</div>
+
+<!-- PASO 3 -->
+
+<!-- PASO 3 -->
+
+<div *ngIf="paso === 3">
+
+<h3>📅Selecciona una fecha</h3>
+
+<div class="dias">
+
+<button
+class="dia"
+*ngFor="let d of dias"
+[class.selected]="fechaSeleccionada === d.fecha"
+(click)="seleccionarFecha(d)">
+
+{{ d.label }}
+
+</button>
+
+</div>
+
+<h4>⏰ Horarios disponibles</h4>
+
+<div class="horarios">
+
+<button
+class="hora"
+*ngFor="let h of horarios"
+[class.selected]="horaSeleccionada === h"
+(click)="seleccionarHora(h)">
+
+{{h}}
+
+</button>
+
+</div>
+
+<br>
+
+<div class="acciones-doctor">
+
+<button class="btn-volver" (click)="volver()">
+← Volver
+</button>
+
+<button
+class="btn"
+(click)="siguiente()"
+*ngIf="horaSeleccionada">
+
+Siguiente →
+
+</button>
+
+</div>
+
+</div>
+
+<!-- PASO 4 -->
+
+<!-- PASO 4 -->
+
+<div *ngIf="paso === 4 && !turnoConfirmado">
+
+<h3>Resumen de tu cita</h3>
+
+<div class="resumen">
+
+<p>🩺 <strong>Especialidad:</strong> {{especialidadSeleccionada}}</p>
+
+<p>👩‍⚕️ <strong>Médico:</strong> {{doctorSeleccionado}}</p>
+
+<p>📅 <strong>Fecha:</strong> {{fechaSeleccionada}}</p>
+
+<p>⏰ <strong>Hora:</strong> {{horaSeleccionada}}</p>
+
+<p>👤 <strong>Paciente:</strong> {{ nombrePaciente }}</p>
+
+</div>
+
+<textarea placeholder="Motivo de la consulta (opcional)..."></textarea>
+
+<p class="error" *ngIf="error" style="color:red">{{ error }}</p>
+
+<br>
+
+<div class="acciones-doctor">
+
+<button class="btn-volver" (click)="volver()">
+← Volver
+</button>
+
+<button class="btn-confirmar" (click)="confirmarTurno()">
+✔ Confirmar Cita
+</button>
+
+</div>
+
+</div>
+
+
+<!-- CONFIRMACION FINAL -->
+
+<div *ngIf="turnoConfirmado" class="confirmacion">
+
+<div class="check">✅</div>
+
+<h2>¡Cita confirmada!</h2>
+
+<p>Tu turno fue agendado exitosamente.</p>
+
+<div class="resumen">
+
+<p>👨‍⚕️ <strong>Médico:</strong> {{doctorSeleccionado}}</p>
+
+<p>🩺 <strong>Especialidad:</strong> {{especialidadSeleccionada}}</p>
+
+<p>📅 <strong>Fecha:</strong> {{fechaSeleccionada}}</p>
+
+<p>⏰ <strong>Hora:</strong> {{horaSeleccionada}}</p>
+
+</div>
+
+<br>
+
+<button class="btn" (click)="volverInicio()">
+🏠 Volver al Inicio
+</button>
+
+
+
+</div>
