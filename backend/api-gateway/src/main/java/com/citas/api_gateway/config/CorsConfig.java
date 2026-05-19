@@ -14,6 +14,9 @@ public class CorsConfig {
 
         CorsConfiguration config = new CorsConfiguration();
 
+        // Frontend desplegado en Vercel
+        config.addAllowedOrigin("https://gestion-de-citas-inteligentee.vercel.app");
+
         // Frontend develop - Angular
         config.addAllowedOrigin("http://localhost:4200");
 
