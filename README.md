@@ -4,6 +4,7 @@
 ### Enlace api: [ir](https://github.com/sparyock/Gestion-De-Citas-Inteligente-api)
 ### Enlace db: [ir](https://github.com/sparyock/Gestion-De-Citas-Inteligente-db)
 ### Enlace Gateway: [ir](https://github.com/Corhuila-Gestion-Citas/Gestion-De-Citas-Inteligente-gateway/tree/main)
+### Enlace docs: [ir](https://github.com/Corhuila-Gestion-Citas/Gestion-De-Citas-Inteligente-docs)
 
 # 🏥 Gestión de Citas Inteligente
 
